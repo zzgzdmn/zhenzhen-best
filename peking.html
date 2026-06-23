@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>京剧详情 - 中国戏曲文化网</title>
+    <!-- 引入核心全局样式表 -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* ==========================================
+           首屏大图轮播：全新升级的 3 张图水平滑行动效（带强制覆盖，100%显现跑动）
+           ========================================== */
+        .carousel-container {
+            width: 100%;
+            height: 600px;
+            position: relative;
+            overflow: hidden;
+            background-color: #f7f5f0; /* 消除页面首屏载入时的黑屏闪烁 */
+        }
+
+        /* 核心滑轨：3张图，轨道总宽度设为 300%（强制覆盖style.css） */
+        .carousel-track {
+            display: flex !important; /* 强制启用flex横排 */
+            width: 300% !important; 
+            height: 100% !important;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1) !important; /* 平滑滑行曲线 */
+        }
+
+        /* 3张图，每一个轮播项占比 1/3（即 33.333%），并强制重置不透明度与定位 */
+        .carousel-item {
+            width: 33.333% !important;
+            height: 100% !important;
+            position: relative !important; /* 强制覆盖 style.css 中的 absolute 绝对定位 */
+            opacity: 1 !important;         /* 强制覆盖 style.css 中的 opacity: 0 隐身属性 */
+            z-index: auto !important;
+        }
+
+        .carousel-item img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            display: block !important;
+        }
+
+        /* ==========================================
+           京剧舞台掠影：完全对齐样例的3D叠位遮挡轮播样式
+           ========================================== */
+        .stage-art-carousel-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            position: relative;
+            padding: 0 60px; /* 留出左右精美箭头的间距 */
+        }
+
+        /* 视窗容器：允许大图阴影和悬浮高度溢出 */
+        .stage-art-viewport {
+            width: 100%;
+            overflow: hidden;
+            padding: 25px 0; /* 上下留白，防止缩放时图片边缘被切掉 */
+        }
+
+        .stage-art-carousel-track {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); /* 平滑过渡效果 */
+            align-items: center;
+        }
+
+        /* 单个卡片样式 */
+        .stage-art-slide {
+            flex: 0 0 460px; /* 每张图固定宽度，确保比例完美呈长方形 */
+            height: 270px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 0 -50px; /* 核心：使用负边距实现左右相邻图片互相层叠遮挡 */
+            opacity: 0.45; /* 非中间图设为半透明 */
+            transform: scale(0.85); /* 非中间图轻微缩小，形成3D叠位空间感 */
+            filter: brightness(0.4); /* 非中间图压暗，突出视觉焦点 */
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 1; /* 默认低层级 */
+            cursor: pointer;
+        }
+
+        /* 中间高亮、覆盖在最上层的活动卡片 */
+        .stage-art-slide.active {
+            opacity: 1; /* 完全亮起 */
+            transform: scale(1.12); /* 放大突出 */
+            filter: brightness(1); /* 恢复正常亮度 */
+            z-index: 10; /* 置于最顶层，压在左右图片上方 */
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); /* 强烈的投影效果 */
+        }
+
+        .stage-art-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 专属左右切换双箭头 */
+        .stage-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(140, 28, 28, 0.85);
+            color: #ffffff;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            z-index: 20; /* 箭头处于最顶层 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .stage-arrow:hover {
+            background: #b52424;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        /* 精准划分左右定位 */
+        .stage-arrow.left-arr { 
+            left: 20px; 
+        }
+        
+        .stage-arrow.right-arr { 
+            right: 20px; 
+        }
+
+        /* 轮播下方的圆点指示器 */
+        .stage-dots {
+            text-align: center;
+            margin-top: 25px;
+        }
+        
+        .stage-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #cccccc;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .stage-dot.active {
+            background: #8c1c1c;
+            width: 24px; /* 拉长效果，显得更精致 */
+            border-radius: 5px;
+        }
+
+        /* ==========================================
+           经典剧目板块：全新字左图右 + 右侧高雅红竖线样式组
+           ========================================== */
+        .repertoire-row {
+            max-width: 1200px;
+            margin: 40px auto;
+            background: #ffffff;
+            border-radius: 8px;
+            display: flex;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e2e2e2;
+            align-items: center;
+            padding: 25px;
+        }
+
+        /* 左侧文字区：右边缘设置精致红立线 */
+        .repertoire-text {
+            flex: 2;
+            padding: 20px 45px 20px 20px; /* 留出空隙给右边的红立线 */
+            border-right: 3px solid #8c1c1c; /* 核心：右侧红立线分割 */
+            margin-right: 40px; /* 与右侧图片的间隔 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: left;
+        }
+
+        /* 剧目大标题：转换为高雅戏曲中国红 */
+        .repertoire-text h3 {
+            font-size: 26px;
+            color: #8c1c1c; /* 标题设为戏曲中国红 */
+            margin-bottom: 15px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            font-family: "STKaiti", "Kaiti", "KaiTi_GB2312", serif;
+        }
+
+        .repertoire-text p {
+            color: #555555;
+            font-size: 15px;
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        /* 右侧图片区 */
+        .repertoire-img {
+            flex: 1;
+            height: 220px;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .repertoire-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ==========================================
+           传承与保护专属样式组：图片缩放16:9比例 + 文字内容宽度缩减
+           ========================================== */
+        .protect-row {
+            max-width: 1200px;
+            margin: 40px auto;
+            background: #ffffff;
+            border-radius: 8px;
+            display: flex;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e2e2e2;
+            align-items: center;
+            padding: 25px;
+        }
+
+        /* 图片容器：调整占比宽度，设置高度240px，完美塑造16:9的宽屏比例 */
+        .protect-img {
+            flex: 1; /* 拓宽图片占比，使其呈现宽屏16:9效果 */
+            height: 240px; /* 与宽度折算后呈现 16:9 比例 */
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .protect-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 文字内容区：缩减占比宽度，使其保持更舒适的行长 */
+        .protect-text {
+            flex: 1.35; /* 稍微缩短文字容器占比，提升可读性 */
+            padding: 20px 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: left;
+        }
+
+        .protect-text h3 {
+            font-size: 24px;
+            color: #111111;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .protect-text p {
+            color: #555555;
+            font-size: 15px;
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        /* ==========================================
+           经典京剧海报专用：高大竖直海报排版（完全与经典豫剧海报比例对齐）
+           ========================================== */
+        .peking-poster-grid {
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 0 10px;
+        }
+
+        .peking-poster-card {
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #e2e2e2;
+            padding: 10px; /* 精简内边距 */
+            height: 330px; /* 强制高度为 330px，与经典豫剧卡片高度绝对一致 */
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .peking-poster-card img {
+            width: 100%;
+            height: 100%; /* 图片平铺占满整个卡片 */
+            object-fit: cover; /* 居中裁剪不拉伸 */
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 全局半透明悬浮导航栏 -->
+    <header>
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="genres.html">剧种介绍</a></li>
+                <li><a href="artists.html">戏曲名家</a></li>
+                <li class="nav-logo">
+                    <img src="images/pic14.png" alt="中国戏曲Logo">
+                    <span>中国戏曲</span>
+                </li>
+                <li><a href="masks.html">戏曲脸谱</a></li>
+                <li><a href="roles.html">戏曲行当</a></li>
+                <li><a href="message.html">留言</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- 顶部大轮播图 (3张通用水平轨道图：pic33.jpg、pic34.jpg、pic35.jpg) -->
+    <div class="carousel-container">
+        <!-- 核心物理滑轨 -->
+        <div class="carousel-track" id="carouselTrack">
+            <!-- 图片33 -->
+            <div class="carousel-item"><img src="images/pic33.jpg" alt="京剧封面1"></div>
+            <!-- 图片34 -->
+            <div class="carousel-item"><img src="images/pic34.jpg" alt="京剧封面2"></div>
+            <!-- 图片35 -->
+            <div class="carousel-item"><img src="images/pic35.jpg" alt="京剧封面3"></div>
+        </div>
+        <button class="carousel-btn prev" onclick="moveSlide(-1)">&#10094;</button>
+        <button class="carousel-btn next" onclick="moveSlide(1)">&#10095;</button>
+    </div>
+
+    <!-- 京剧舞台掠影（卡片叠位式高级轮播板块） -->
+    <div class="section-title">
+        <h2>京剧舞台掠影</h2>
+        <p>Stage Art Gallery</p>
+    </div>
+    
+    <div class="stage-art-carousel-container">
+        <!-- 左右切换双箭头 -->
+        <button class="stage-arrow left-arr" onclick="moveStageSlide(-1)">&#10094;</button>
+        
+        <div class="stage-art-viewport">
+            <div class="stage-art-carousel-track" id="stageTrack">
+                <!-- 图片36 至 图片41：对应六张长方形舞台掠影卡片 -->
+                <div class="stage-art-slide" onclick="setStageIndex(0)"><img src="images/pic36.jpg" alt="掠影1"></div>
+                <div class="stage-art-slide" onclick="setStageIndex(1)"><img src="images/pic37.jpg" alt="掠影2"></div>
+                <div class="stage-art-slide" onclick="setStageIndex(2)"><img src="images/pic38.jpg" alt="掠影3"></div>
+                <div class="stage-art-slide" onclick="setStageIndex(3)"><img src="images/pic39.jpg" alt="掠影4"></div>
+                <div class="stage-art-slide" onclick="setStageIndex(4)"><img src="images/pic40.jpg" alt="掠影5"></div>
+                <div class="stage-art-slide" onclick="setStageIndex(5)"><img src="images/pic41.jpg" alt="掠影6"></div>
+            </div>
+        </div>
+        
+        <button class="stage-arrow right-arr" onclick="moveStageSlide(1)">&#10095;</button>
+        
+        <!-- 圆点指示器 -->
+        <div class="stage-dots" id="stageDotsContainer"></div>
+    </div>
+
+    <!-- 艺术特色板 -->
+    <div class="section-title">
+        <h2>艺术特色</h2>
+        <p>About Art</p>
+    </div>
+    
+    <div class="features-grid">
+        <div class="feature-card hover-effect">
+            <div class="feature-img-wrapper">
+                <!-- 图片42: 唱腔与伴奏图 -->
+                <img src="images/pic42.jpg" alt="唱腔与伴奏">
+            </div>
+            <div class="feature-info">
+                <h3>唱腔与伴奏</h3>
+                <p>京剧的唱腔主要有西皮和二黄，伴奏乐器以京胡、月琴为主，打击乐以板鼓为主，文场和武场界限分明。</p>
+            </div>
+        </div>
+        <div class="feature-card hover-effect">
+            <div class="feature-img-wrapper">
+                <!-- 图片43: 角色与行当图 -->
+                <img src="images/pic43.jpg" alt="角色与行当">
+            </div>
+            <div class="feature-info">
+                <h3>角色与行当</h3>
+                <p>京剧行当齐全，分为生、旦、净、丑，各行当都有极其严密细致的艺术规范与独特的脸谱程式特征。</p>
+            </div>
+        </div>
+        <div class="feature-card hover-effect">
+            <div class="feature-img-wrapper">
+                <!-- 图片44: 表演形式图 -->
+                <img src="images/pic44.jpg" alt="表演形式">
+            </div>
+            <div class="feature-info">
+                <h3>表演形式</h3>
+                <p>包含唱、做、念、打四项基本功，声音收放自如，动作典雅，技巧高超，具有非常强烈的民族美感。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 经典剧目（字左图右 + 高雅红立线） -->
+    <div class="section-title">
+        <h2>经典剧目</h2>
+        <p>Classic Repertoire</p>
+    </div>
+
+    <!-- 剧目一：霸王别姬 -->
+    <div class="repertoire-row">
+        <div class="repertoire-text">
+            <h3>《霸王别姬》</h3>
+            <p>京剧《霸王别姬》取材于昆曲《千金记》和《史记·项羽本纪》，讲述了秦末时期楚汉相争，项羽不听劝告执意发兵，行至九里山附近时被韩信设下十面埋伏阵困于垓下的壮烈故事。项羽感到大势已去，在营中与虞姬饮酒悲歌。虞姬为免除项羽后顾之忧，舞剑后自刎。该剧目是梅兰芳先生代表剧目，以其独特的艺术魅力在京剧舞台上长演不衰，已成为经典传统名剧。</p>
+        </div>
+        <div class="repertoire-img hover-effect">
+            <!-- 图片45: 经典剧目之霸王别姬图 -->
+            <img src="images/pic45.jpg" alt="霸王别姬">
+        </div>
+    </div>
+
+    <!-- 剧目二：贵妃醉酒 -->
+    <div class="repertoire-row">
+        <div class="repertoire-img hover-effect">
+            <!-- 图片46: 经典剧目之贵妃醉酒图 -->
+            <img src="images/pic46.jpg" alt="贵妃醉酒">
+        </div>
+        <div class="repertoire-text">
+            <h3>《贵妃醉酒》</h3>
+            <p>京剧《贵妃醉酒》又名《百花亭》，是一出单折戏。取材于唐明皇与杨贵妃的爱情故事。该剧讲述唐玄宗与杨贵妃相约在百花亭赏花饮酒，却爽约转驾西宫。杨贵妃久候不至，羞怒交加，命高力士、裴力士添杯奉盏，饮致大醉，怅然返宫。梅兰芳大师对该剧进行了精心创作和表演，使其成为梅派经典代表剧目之一。通过优美的身段与唱功，细腻生动地展现了杨贵妃内心的幽怨情感。</p>
+        </div>
+    </div>
+
+    <!-- 剧目三：四郎探母 -->
+    <div class="repertoire-row">
+        <div class="repertoire-text">
+            <h3>《四郎探母》</h3>
+            <p>京剧《四郎探母》是京剧传统剧目，取材于《杨家将演义》第四十一回。该剧讲述了宋辽交战时，杨四郎（延辉）被擒后改名木易，成为辽邦驸马。十五年后，他得知母亲佘太君押粮至边关，思母心切，公主铁镜博得辽邦令箭帮助其出关探母。四郎得以与母亲、兄弟及原配妻子相会，之后无违信返回辽邦，险被萧太后问斩，幸得公主求情得免。该剧以其深刻的情感刻画和精彩的剧情深受喜爱。</p>
+        </div>
+        <div class="repertoire-img hover-effect">
+            <!-- 图片47: 经典剧目之四郎探母图 -->
+            <img src="images/pic47.jpg" alt="四郎探母">
+        </div>
+    </div>
+
+    <!-- 传承与保护 (采用16:9比例缩放图片，完美缩减文字排版宽度) -->
+    <div class="section-title">
+        <h2>京剧的传承与保护</h2>
+        <p>Inheritance and Protection of Peking Opera</p>
+    </div>
+
+    <!-- 行当一：非遗保护（图在左，字在右） -->
+    <div class="protect-row">
+        <div class="protect-img hover-effect">
+            <!-- 图片48: 非遗保护单位徽章图 (16:9) -->
+            <img src="images/pic48.jpg" alt="非遗保护">
+        </div>
+        <div class="protect-text">
+            <h3>国家级非物质文化遗产</h3>
+            <p>2006年5月，京剧被国务院批准列入第一批国家级非物质文化遗产名录。2010年，被列入联合国教科文组织人类非物质文化遗产代表作名录。</p>
+        </div>
+    </div>
+
+    <!-- 行当二：保护单位（字在左，图在右） -->
+    <div class="protect-row">
+        <div class="protect-text">
+            <h3>保护单位</h3>
+            <p>中国国家京剧院、北京京剧院、天津京剧院、上海京剧院等是国家级重点保护和传承单位，常年进行经典剧目的复排与非遗技艺传帮带工作。</p>
+        </div>
+        <div class="protect-img hover-effect">
+            <!-- 图片49: 保护单位图 (16:9) -->
+            <img src="images/pic49.jpg" alt="保护单位">
+        </div>
+    </div>
+
+    <!-- 经典京剧海报（全新竖幅长方形卡片，已彻底与经典豫剧海报比例对齐） -->
+    <div class="section-title">
+        <h2>经典京剧</h2>
+        <p>Classic Beijing Opera</p>
+    </div>
+
+    <div class="peking-poster-grid">
+        <!-- 卡片 1 (图片50: 无字纯图) -->
+        <div class="peking-poster-card hover-effect">
+            <img src="images/pic50.jpg" alt="经典海报1">
+        </div>
+        <!-- 卡片 2 (图片51: 无字纯图) -->
+        <div class="peking-poster-card hover-effect">
+            <img src="images/pic51.jpg" alt="经典海报2">
+        </div>
+        <!-- 卡片 3 (图片52: 无字纯图) -->
+        <div class="peking-poster-card hover-effect">
+            <img src="images/pic52.jpg" alt="经典海报3">
+        </div>
+        <!-- 卡片 4 (图片53: 无字纯图) -->
+        <div class="peking-poster-card hover-effect">
+            <img src="images/pic53.jpg" alt="经典海报4">
+        </div>
+    </div>
+
+    <!-- 统一页脚 (100%全跳页脚，素材来源绑定您提供的4个最新域名，底署名为“珍珍仙女出品”) -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>经典剧目</h4>
+                <ul>
+                    <li><a href="peking.html">京剧</a></li>
+                    <li><a href="yue.html">越剧</a></li>
+                    <li><a href="huangmei.html">黄梅戏</a></li>
+                    <li><a href="ping.html">评剧</a></li>
+                    <li><a href="yu.html">豫剧</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>素材来源</h4>
+                <ul>
+                    <li><a href="http://xi-qu.com/" target="_blank">中国戏曲网</a></li>
+                    <li><a href="https://www.china1901.com/#/" target="_blank">中国音网</a></li>
+                    <li><a href="https://www.xikao.com/" target="_blank">中国京剧戏考</a></li>
+                    <li><a href="https://www.bjo.com.cn/" target="_blank">北京京剧院</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>联系我们</h4>
+                <ul>
+                    <li><a href="message.html">点击进入留言板块</a></li>
+                    <li>手机：17864386130</li>
+                    <li>邮箱：3590619453@qq.com</li>
+                </ul>
+            </div>
+            <div class="footer-column footer-mascot">
+                <img src="images/pic14.png" alt="可爱戏剧人物">
+            </div>
+        </div>
+        <div class="footer-bottom-line" style="color: #888; font-size: 13px; font-weight: bold !important; letter-spacing: 1px;">
+            珍珍仙女出品
+        </div>
+    </footer>
+
+    <!-- 图片无缝放大查看模态框 -->
+    <div id="lightbox-modal" onclick="this.style.display='none'">
+        <img id="lightbox-img" src="" alt="放大查看">
+    </div>
+
+    <!-- 全局两套轮播图控制JS脚本 -->
+    <script>
+        // -------------------------------------------------------------
+        // 系统 1：大封面首屏轮播控制 (水平滑道控制)
+        // -------------------------------------------------------------
+        let slideIndex = 0;
+        const track = document.getElementById("carouselTrack");
+        const totalSlides = document.getElementsByClassName("carousel-item").length; // 会自动计算出3张
+        
+        // 初始化加载
+        showSlides(slideIndex);
+
+        function showSlides(n) {
+            if (n >= totalSlides) { slideIndex = 0; }
+            if (n < 0) { slideIndex = totalSlides - 1; }
+            
+            // 核心计算公式：3张大图，每张占轨道总宽度的 33.333%
+            const offset = -slideIndex * 33.333; 
+            track.style.transform = `translateX(${offset}%)`;
+        }
+        function moveSlide(n) {
+            slideIndex += n;
+            showSlides(slideIndex);
+        }
+        setInterval(() => { moveSlide(1); }, 5000);
+
+        // -------------------------------------------------------------
+        // 系统 2：舞台掠影 3D叠位轮播高精度居中控制
+        // -------------------------------------------------------------
+        let stageIndex = 1; // 默认第二张（豫剧/索引1）居中
+        const stageTrack = document.getElementById("stageTrack");
+        const stageSlides = document.querySelectorAll(".stage-art-slide");
+        const totalStageSlides = stageSlides.length;
+        const dotsContainer = document.getElementById("stageDotsContainer");
+
+        // 动态生成轮播指示圆点
+        for (let i = 0; i < totalStageSlides; i++) {
+            const dot = document.createElement("span");
+            dot.classList.add("stage-dot");
+            if (i === stageIndex) dot.classList.add("active");
+            dot.onclick = () => {
+                stageIndex = i;
+                updateStageCarousel();
+            };
+            dotsContainer.appendChild(dot);
+        }
+        const stageDots = document.querySelectorAll(".stage-dot");
+
+        function updateStageCarousel() {
+            // 获取视口总宽度与单个卡片实际宽度
+            const viewport = document.querySelector(".stage-art-viewport");
+            let viewportWidth = viewport ? viewport.getBoundingClientRect().width : 0;
+            
+            // 核心：若本地协议加载导致测量高度返回0，采用1080px高保真自适应兜底像素，防止运算锁死
+            if (!viewportWidth || viewportWidth === 0) {
+                viewportWidth = 1080;
+            }
+            
+            const slideWidth = 460; // 与CSS中的460px对应
+            const negativeMargin = -50; // CSS中设置的 -50px 负边距
+            
+            // 核心高精度算法：计算每一个活动状态卡片移动到视口“绝对中心”所需的translateX偏移值
+            const effectiveWidth = slideWidth + (2 * negativeMargin);
+            const activeCenter = stageIndex * effectiveWidth + slideWidth / 2;
+            const viewportCenter = viewportWidth / 2;
+            const offset = viewportCenter - activeCenter;
+            
+            // 执行轨道移位
+            stageTrack.style.transform = `translateX(${offset}px)`;
+
+            // 动态切换活动样式与黑影压暗
+            stageSlides.forEach((slide, idx) => {
+                slide.classList.remove("active");
+                if (idx === stageIndex) {
+                    slide.classList.add("active");
+                }
+            });
+
+            // 更新点指示器状态
+            stageDots.forEach((dot, idx) => {
+                dot.classList.remove("active");
+                if (idx === stageIndex) {
+                    dot.classList.add("active");
+                }
+            });
+        }
+
+        function moveStageSlide(n) {
+            stageIndex += n;
+            if (stageIndex >= totalStageSlides) {
+                stageIndex = 0; // 循环往复
+            }
+            if (stageIndex < 0) {
+                stageIndex = totalStageSlides - 1;
+            }
+            updateStageCarousel();
+        }
+
+        function setStageIndex(index) {
+            stageIndex = index;
+            updateStageCarousel();
+        }
+
+        // 初始化舞台掠影轮播
+        updateStageCarousel();
+        window.addEventListener('resize', updateStageCarousel); // 屏幕窗口缩放时自适应居中
+    </script>
+</body>
+</html>

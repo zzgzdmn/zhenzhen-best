@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>黄梅戏详情 - 中国戏曲文化网</title>
+    <!-- 引入核心全局样式表 -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* ==========================================
+           黄梅戏详情页：专属微调版面样式（100%对齐样图）
+           ========================================== */
+
+        /* 1. 历史沿革：四列高耸卡片布局，图片比例3:4 */
+        .history-grid {
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 0 10px;
+        }
+
+        .history-card {
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #e2e2e2;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 480px; /* 锁死高大垂直比例卡片 */
+        }
+
+        .history-card-img {
+            width: 100%;
+            height: 230px; /* 强制图片为高耸垂直比例 */
+            overflow: hidden;
+        }
+
+        .history-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 保证居中平铺 */
+        }
+
+        .history-card-info {
+            padding: 15px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            text-align: left;
+        }
+
+        .history-card-info h3 {
+            font-size: 18px;
+            color: #8c1c1c; /* 戏曲经典中国红 */
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .history-card-info p {
+            font-size: 13.5px;
+            color: #111111;
+            line-height: 1.6;
+            text-align: justify;
+        }
+
+        /* 2. 黄梅戏简介：带两侧黑色立幅诗句的高级卡片 */
+        .huangmei-intro-row {
+            max-width: 1200px;
+            margin: 40px auto;
+            background: #ffffff;
+            border-radius: 8px;
+            display: flex;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+            padding: 15px; /* 为黑色边条留出内边距 */
+            align-items: center; /* 垂直居中对齐 */
+        }
+
+        /* 左右两侧黑底白字竖条：完美对齐图片高度，并强制一侧仅显示单缕文字 */
+        .intro-vertical-banner {
+            width: 35px;
+            height: 260px; /* 高度锁定为260px，与旁边的图片高度完全等高 */
+            background-color: #222222; /* 典雅深色背景 */
+            color: #ffffff;
+            font-size: 13px; /* 调整字号，使11个汉字在260px高度内展示得极其舒展、美观 */
+            font-weight: bold;
+            letter-spacing: 5px; /* 字间距 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            writing-mode: vertical-rl; /* 核心：文字垂直排版 */
+            white-space: nowrap; /* 核心：强制不折行，绝不在一侧产生两列字 */
+            padding: 10px 0;
+            border-radius: 4px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            font-family: "STKaiti", "Kaiti", serif;
+            align-self: center; /* 防止在弹性盒子里被拉伸撑长 */
+        }
+
+        /* 中间图文内容 */
+        .intro-main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            padding: 0 25px;
+        }
+
+        .intro-img {
+            flex: 0.8;
+            height: 260px; /* 简介图高度 */
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .intro-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .intro-text {
+            flex: 1.2;
+            padding-left: 30px;
+            text-align: justify;
+        }
+
+        .intro-text p {
+            color: #111111;
+            font-size: 14.5px;
+            line-height: 1.8;
+            text-indent: 2em; /* 首行自动缩进 */
+            margin-bottom: 12px;
+        }
+
+        /* 3. 经典黄梅戏：横屏经典剧照平铺网格 */
+        .huangmei-poster-grid {
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 完美 3 列排版 */
+            gap: 15px;
+            padding: 0 10px;
+        }
+
+        .huangmei-poster-card {
+            height: 220px; /* 强制锁定为宽屏横比例 */
+            overflow: hidden;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .huangmei-poster-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* 首屏大图轮播：全新升级的 3 张图水平滑行动效（带强制覆盖，100%显现跑动） */
+        .carousel-container {
+            width: 100%;
+            height: 600px;
+            position: relative;
+            overflow: hidden;
+            background-color: #f7f5f0; /* 消除页面首屏载入时的黑屏闪烁 */
+        }
+
+        /* 核心滑轨：3张图，轨道总宽度设为 300%（强制覆盖style.css） */
+        .carousel-track {
+            display: flex !important; /* 强制启用flex横排 */
+            width: 300% !important; 
+            height: 100% !important;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1) !important; /* 平滑滑行曲线 */
+        }
+
+        /* 3张图，每一个轮播项占比 1/3（即 33.333%），并强制重置不透明度与定位 */
+        .carousel-item {
+            width: 33.333% !important;
+            height: 100% !important;
+            position: relative !important; /* 强制覆盖 style.css 中的 absolute 绝对定位 */
+            opacity: 1 !important;         /* 强制覆盖 style.css 中的 opacity: 0 隐身属性 */
+            z-index: auto !important;
+        }
+
+        .carousel-item img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            display: block !important;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="genres.html">剧种介绍</a></li>
+                <li><a href="artists.html">戏曲名家</a></li>
+                <li class="nav-logo">
+                    <img src="images/pic14.png" alt="中国戏曲Logo">
+                    <span>中国戏曲</span>
+                </li>
+                <li><a href="masks.html">戏曲脸谱</a></li>
+                <li><a href="roles.html">戏曲行当</a></li>
+                <li><a href="message.html">留言</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- 顶部大轮播图 (对应 pic70.jpg、pic71.jpg、pic72.jpg) -->
+    <div class="carousel-container">
+        <!-- 核心物理滑轨 -->
+        <div class="carousel-track" id="carouselTrack">
+            <!-- 图片70 -->
+            <div class="carousel-item"><img src="images/pic70.jpg" alt="黄梅戏封面1"></div>
+            <!-- 图片71 -->
+            <div class="carousel-item"><img src="images/pic71.jpg" alt="黄梅戏封面2"></div>
+            <!-- 图片72 -->
+            <div class="carousel-item"><img src="images/pic72.jpg" alt="黄梅戏封面3"></div>
+        </div>
+        <button class="carousel-btn prev" onclick="moveSlide(-1)">&#10094;</button>
+        <button class="carousel-btn next" onclick="moveSlide(1)">&#10095;</button>
+    </div>
+
+    <!-- 历史沿革 (四列3:4高比例竖版卡片网格) -->
+    <div class="section-title">
+        <h2>历史沿革</h2>
+        <p>History</p>
+    </div>
+
+    <div class="history-grid">
+        <!-- 卡片1: 历史背景 -->
+        <div class="history-card hover-effect">
+            <div class="history-card-img">
+                <!-- 图片73: 历史背景竖版剧照 -->
+                <img src="images/pic73.jpg" alt="历史背景">
+            </div>
+            <div class="history-card-info">
+                <h3>历史背景</h3>
+                <p>黄梅戏历史背景可概括为：黄梅戏起源于湖北省黄梅县，后发展壮大于安徽省安庆市，是安徽的主要地方戏曲剧种。它吸收了多种剧种因素，逐渐形成了自己的艺术特点，并在2006年被列入国家级非物质文化遗产名录。</p>
+            </div>
+        </div>
+        
+        <!-- 卡片2: 起源阶段 -->
+        <div class="history-card hover-effect">
+            <div class="history-card-img">
+                <!-- 图片74: 起源阶段竖版剧照 -->
+                <img src="images/pic74.jpg" alt="起源阶段">
+            </div>
+            <div class="history-card-info">
+                <h3>起源阶段</h3>
+                <p>经历了由男子戏班到女子戏班为主的历史性演变。1925年9月，在上海小世界游乐场演出的“的笃班”，首次在《申报》广告上称为“越剧”。1938年起，多数戏班和剧团称“越剧”。</p>
+            </div>
+        </div>
+        
+        <!-- 卡片3: 发展阶段 -->
+        <div class="history-card hover-effect">
+            <div class="history-card-img">
+                <!-- 图片75: 发展阶段竖版剧照 -->
+                <img src="images/pic75.jpg" alt="发展阶段">
+            </div>
+            <div class="history-card-info">
+                <h3>发展阶段</h3>
+                <p>黄梅戏形成以后，以湖北黄梅为中心，陆续多次传入江西、安徽、浙江、福建、江苏等地。获得了黄梅调、黄梅腔等美誉。晚清时，始出现“黄梅戏”之名，并在湖北黄梅完成传统剧目的积累。</p>
+            </div>
+        </div>
+        
+        <!-- 卡片4: 流传阶段 -->
+        <div class="history-card hover-effect">
+            <div class="history-card-img">
+                <!-- 图片76: 流传阶段竖版剧照 -->
+                <img src="images/pic76.jpg" alt="流传阶段">
+            </div>
+            <div class="history-card-info">
+                <h3>流传阶段</h3>
+                <p>黄梅戏在清末民初进入芜湖、上海等大都市演出，成为安徽艺人20世纪二三十年代在城市演出的先声。为1950年代安庆进行黄梅戏戏改、完善并定型黄梅戏奠定了坚实的基础。此后，黄梅戏逐渐走向全国。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 黄梅戏简介 (两边加黑底白色竖幅诗句，已调整为绝对一缕11字极雅格式) -->
+    <div class="section-title">
+        <h2>黄梅戏简介</h2>
+        <p>Introduction to Huangmei Opera</p>
+    </div>
+
+    <div class="huangmei-intro-row">
+        <!-- 左侧黑边竖幅（高度等齐260px，防换行单缕11字） -->
+        <div class="intro-vertical-banner">
+            · 旋律优美 · 黄梅醇浓 ·
+        </div>
+        
+        <!-- 中间图文内容 -->
+        <div class="intro-main-content">
+            <div class="intro-img hover-effect">
+                <!-- 图片77: 简介图 (高度260px) -->
+                <img src="images/pic77.jpg" alt="黄梅戏简介">
+            </div>
+            <div class="intro-text">
+                <p>黄梅戏，原名黄梅调、采茶戏等，源于湖北黄梅县、安徽省安庆市于2006年共同获批的国家级非物质文化遗产。安徽省黄梅戏艺术研究院等研究认为黄梅戏起源于黄梅采茶调。安徽省黄梅戏剧院官方显示黄梅戏源自湖北黄梅县一带有名的“采茶调”。</p>
+                <p>黄梅戏与京剧、越剧、评剧、豫剧并称“中国五大戏曲剧种”，也是安徽省的地方戏曲剧种，在湖北、江西、福建、浙江、江苏、香港、台湾等地亦有黄梅戏的专业或业余的演出团体，受到广泛的欢迎。黄梅戏是由山歌、秧歌、茶歌、采茶灯、花鼓调，先于农村，后入城市，逐步形成发展起来的一个剧种。</p>
+            </div>
+        </div>
+        
+        <!-- 右侧黑边竖幅（高度等齐260px，防换行单缕11字） -->
+        <div class="intro-vertical-banner">
+            · 声腔淳朴 · 韵味深厚 ·
+        </div>
+    </div>
+
+    <!-- 经典黄梅戏 (无字纯横幅大画廊) -->
+    <div class="section-title">
+        <h2>经典黄梅戏</h2>
+        <p>Classic Huangmei Opera</p>
+    </div>
+
+    <div class="huangmei-poster-grid">
+        <!-- 图片78 至 图片83 -->
+        <div class="huangmei-poster-card hover-effect"><img src="images/pic78.jpg" alt="经典1"></div>
+        <div class="huangmei-poster-card hover-effect"><img src="images/pic79.jpg" alt="经典2"></div>
+        <div class="huangmei-poster-card hover-effect"><img src="images/pic80.jpg" alt="经典3"></div>
+        <div class="huangmei-poster-card hover-effect"><img src="images/pic81.jpg" alt="经典4"></div>
+        <div class="huangmei-poster-card hover-effect"><img src="images/pic82.jpg" alt="经典5"></div>
+        <div class="huangmei-poster-card hover-effect"><img src="images/pic83.jpg" alt="经典6"></div>
+    </div>
+
+    <!-- 统一底栏 -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>经典剧目</h4>
+                <ul>
+                    <li><a href="peking.html">京剧</a></li>
+                    <li><a href="yue.html">越剧</a></li>
+                    <li><a href="huangmei.html">黄梅戏</a></li>
+                    <li><a href="ping.html">评剧</a></li>
+                    <li><a href="yu.html">豫剧</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>素材来源</h4>
+                <ul>
+                    <li><a href="http://xi-qu.com/" target="_blank">中国戏曲网</a></li>
+                    <li><a href="https://www.china1901.com/#/" target="_blank">中国音网</a></li>
+                    <li><a href="https://www.xikao.com/" target="_blank">中国京剧戏考</a></li>
+                    <li><a href="https://www.bjo.com.cn/" target="_blank">北京京剧院</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>联系我们</h4>
+                <ul>
+                    <li><a href="message.html">点击进入留言板块</a></li>
+                    <li>手机：17864386130</li>
+                    <li>邮箱：3590619453@qq.com</li>
+                </ul>
+            </div>
+            <div class="footer-column footer-mascot">
+                <img src="images/pic14.png" alt="可爱戏剧人物">
+            </div>
+        </div>
+        <div class="footer-bottom-line" style="color: #888; font-size: 13px; font-weight: bold !important; letter-spacing: 1px;">
+            珍珍仙女出品
+        </div>
+    </footer>
+
+    <!-- 首屏滑动轮播控制原生JS (已更正为高精度物理滑位移算法) -->
+    <script>
+        let slideIndex = 0;
+        const track = document.getElementById("carouselTrack");
+        const totalSlides = document.getElementsByClassName("carousel-item").length; // 会自动计算出3张
+        
+        // 初始化加载
+        showSlides(slideIndex);
+
+        function showSlides(n) {
+            if (n >= totalSlides) { slideIndex = 0; }
+            if (n < 0) { slideIndex = totalSlides - 1; }
+            
+            // 核心计算公式：3张大图，每张占轨道总宽度的 33.333%
+            const offset = -slideIndex * 33.333; 
+            track.style.transform = `translateX(${offset}%)`;
+        }
+        function moveSlide(n) {
+            slideIndex += n;
+            showSlides(slideIndex);
+        }
+        setInterval(() => { moveSlide(1); }, 5000); // 5秒自动换一张
+    </script>
+</body>
+</html>

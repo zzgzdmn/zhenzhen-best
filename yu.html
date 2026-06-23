@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>豫剧详情 - 中国戏曲文化网</title>
+    <!-- 引入核心全局样式表 -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* ==========================================
+           首屏大图轮播：全新升级的 3 张图水平滑行动效（带强制覆盖，100%显现跑动）
+           ========================================== */
+        .carousel-container {
+            width: 100%;
+            height: 600px;
+            position: relative;
+            overflow: hidden;
+            background-color: #f7f5f0; /* 消除页面首屏载入时的黑屏闪烁 */
+        }
+
+        /* 核心滑轨：3张图，轨道总宽度设为 300%（强制覆盖style.css） */
+        .carousel-track {
+            display: flex !important; /* 强制启用flex横排 */
+            width: 300% !important; 
+            height: 100% !important;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1) !important; /* 平滑滑行曲线 */
+        }
+
+        /* 3张图，每一个轮播项占比 1/3（即 33.333%），并强制重置不透明度与定位 */
+        .carousel-item {
+            width: 33.333% !important;
+            height: 100% !important;
+            position: relative !important; /* 强制覆盖 style.css 中的 absolute 绝对定位 */
+            opacity: 1 !important;         /* 强制覆盖 style.css 中的 opacity: 0 隐身属性 */
+            z-index: auto !important;
+        }
+
+        .carousel-item img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            display: block !important;
+        }
+
+        /* ==========================================
+           豫剧详情页：专属微调版面样式（100%对齐样图）
+           ========================================== */
+
+        /* 1. 剧目与表演：完全移除白框底色，直接融入全局背景，设置宽度为与上方简介完全一致的 1100px */
+        .yu-performance-container {
+            max-width: 1100px; /* 设为与上方的‘豫剧简介’等宽的 1100px，保持同宽 */
+            margin: 40px auto 60px;
+            padding: 0 10px; /* 移除了大白卡片的底色、边框、阴影和内边距 */
+            background: none;
+            border: none;
+            box-shadow: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 拼接图片容器：宽度设为 100%（即 1100px），保证和上方简介板块以及下方舞台艺术板块等宽 */
+        .yu-performance-img-wrapper {
+            width: 100%;
+            height: 300px; /* 高度设为 300px 显得更精致 */
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+            display: flex; /* 弹性盒子，让左右两张图并排显示 */
+            gap: 0; /* 核心：中间零缝隙 */
+        }
+
+        .yu-performance-img-wrapper img {
+            width: 50%; /* 两个图片各占一半宽度 */
+            height: 100%;
+            object-fit: cover; /* 保证居中裁剪不拉伸 */
+        }
+
+        /* 底部文字容器：宽度设为 100%（即 1100px），保证和上方的图以及简介板块完全对齐 */
+        .yu-performance-text {
+            width: 100%;
+            color: #111111;
+            font-size: 15px;
+            line-height: 1.8;
+            text-align: justify; /* 文本两端对齐 */
+            text-justify: inter-ideograph;
+            padding: 0; /* 移除内边距，保证文本与上面的图片垂直边缘完全切齐 */
+        }
+
+        .yu-performance-text p {
+            margin-bottom: 15px;
+            text-indent: 2em; /* 首行自动缩进2个中文字符 */
+        }
+
+        /* 2. 舞台艺术板块：三栏横图，同样设定为 1100px 统一标准宽度 */
+        .yu-stage-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1100px; /* 对齐 1100px */
+            margin: 0 auto 50px;
+            padding: 0 10px;
+        }
+
+        .yu-stage-item {
+            height: 220px;
+            overflow: hidden;
+            border-radius: 6px;
+        }
+
+        .yu-stage-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 3. 经典豫剧海报：纯图展示比例，同样设定为 1100px 统一标准宽度，彻底去除底部文字 */
+        .yu-poster-grid {
+            max-width: 1100px; /* 对齐 1100px */
+            margin: 0 auto 50px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 0 10px;
+        }
+
+        .yu-poster-card {
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #e2e2e2;
+            padding: 10px; /* 精简边距 */
+            height: 330px; /* 缩短卡片高度，因为没有了文字 */
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .yu-poster-card img {
+            width: 100%;
+            height: 100%; /* 让图片平铺占满整个卡片 */
+            object-fit: cover;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 全局统一导航栏 -->
+    <header>
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="genres.html">剧种介绍</a></li>
+                <li><a href="artists.html">戏曲名家</a></li>
+                <li class="nav-logo">
+                    <img src="images/pic14.png" alt="中国戏曲Logo">
+                    <span>中国戏曲</span>
+                </li>
+                <li><a href="masks.html">戏曲脸谱</a></li>
+                <li><a href="roles.html">戏曲行当</a></li>
+                <li><a href="message.html">留言</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- 顶部大轮播图 (对应 pic97.jpg、pic98.jpg、pic99.jpg) -->
+    <div class="carousel-container">
+        <!-- 核心物理滑轨 -->
+        <div class="carousel-track" id="carouselTrack">
+            <!-- 图片97 -->
+            <div class="carousel-item"><img src="images/pic97.png" alt="豫剧封面1"></div>
+            <!-- 图片98 -->
+            <div class="carousel-item"><img src="images/pic98.jpg" alt="豫剧封面2"></div>
+            <!-- 图片99 -->
+            <div class="carousel-item"><img src="images/pic99.png" alt="豫剧封面3"></div>
+        </div>
+        <button class="carousel-btn prev" onclick="moveSlide(-1)">&#10094;</button>
+        <button class="carousel-btn next" onclick="moveSlide(1)">&#10095;</button>
+    </div>
+
+    <!-- 豫剧简介 -->
+    <div class="section-title">
+        <h2>豫剧简介</h2>
+        <p>Introduction to Yu Opera</p>
+    </div>
+
+    <div class="info-row" style="max-width: 1100px;">
+        <div class="info-img hover-effect" style="flex: 0.6; height: 260px;">
+            <!-- 图片100 -->
+            <img src="images/pic100.jpg" alt="豫剧简介">
+        </div>
+        <div class="info-text">
+            <p style="text-indent: 2em; line-height: 1.8; font-size: 14px; text-align: justify;">豫剧是中国五大戏曲剧种之一，也是中国第一大地方剧种。主要流行于河南省，同时流传于中国各地。它起源于河南开封，是在河南梆子的基础上不断继承、改革和创新发展起来的，因其音乐伴奏用枣木梆子打拍，故早期得名河南梆子。建国后因河南简称“豫”，故称豫剧。豫剧以唱腔铿锵大气、抑扬成度、行腔流利、韵味醇美、生动活泼、善于表达人物内心感情著称，凭借其高度的艺术性而广受各界人士欢迎。</p>
+        </div>
+    </div>
+
+    <!-- 剧目与表演（图上字下、1100px等宽、背景完全透明融入山水画中） -->
+    <div class="section-title">
+        <h2>剧目与表演</h2>
+        <p>Repertoire & Performances</p>
+    </div>
+
+    <div class="yu-performance-container">
+        <!-- 无缝横排拼接的图片板块（图片101 与 图片102 完美无缝合一） -->
+        <div class="yu-performance-img-wrapper hover-effect">
+            <!-- 图片101: 左半图 -->
+            <img src="images/pic101.jpg" alt="剧目与表演左图">
+            <!-- 图片102: 右半图 -->
+            <img src="images/pic102.jpg" alt="剧目与表演右图">
+        </div>
+        <div class="yu-performance-text">
+            <p>豫剧剧目丰富，既有传统历史剧，也有现代戏。传统剧目有《穆桂英挂帅》《朝阳沟》《七品芝麻官》《花木兰》《程婴救孤》等，现代剧则有《朝阳沟》等经典作品。</p>
+            <p>豫剧表演艺术精湛。演员通过唱、念、做、打等表演手段，将人物性格和情感生动地呈现在舞台上。豫剧拥有众多著名演员和艺术家，如张宝英、牛淑贤、王清芬、虎美玲、李喜华、普爱梅、乐巧云、李金枝、马莉、章兰等。他们凭借精湛的演技和深厚的艺术功底，为豫剧的发展做出了巨大贡献。</p>
+        </div>
+    </div>
+
+    <!-- 舞台艺术 -->
+    <div class="section-title">
+        <h2>舞台艺术</h2>
+        <p>Stagecraft</p>
+    </div>
+
+    <div class="yu-stage-grid">
+        <!-- 图片103 至 图片105 -->
+        <div class="yu-stage-item hover-effect"><img src="images/pic103.jpg" alt="舞台1"></div>
+        <div class="yu-stage-item hover-effect"><img src="images/pic104.jpg" alt="舞台2"></div>
+        <div class="yu-stage-item hover-effect"><img src="images/pic105.jpg" alt="舞台3"></div>
+    </div>
+
+    <!-- 经典豫剧（海报纯图卡片，已彻底去除下方文字说明） -->
+    <div class="section-title">
+        <h2>经典豫剧</h2>
+        <p>Classic Yu opera</p>
+    </div>
+
+    <div class="yu-poster-grid">
+        <!-- 卡片 1 (图片106: 无字纯图) -->
+        <div class="yu-poster-card hover-effect">
+            <img src="images/pic106.jpg" alt="经典海报1">
+        </div>
+        <!-- 卡片 2 (图片107: 无字纯图) -->
+        <div class="yu-poster-card hover-effect">
+            <img src="images/pic107.jpg" alt="经典海报2">
+        </div>
+        <!-- 卡片 3 (图片108: 无字纯图) -->
+        <div class="yu-poster-card hover-effect">
+            <img src="images/pic108.jpg" alt="经典海报3">
+        </div>
+        <!-- 卡片 4 (图片109: 无字纯图) -->
+        <div class="yu-poster-card hover-effect">
+            <img src="images/pic109.jpg" alt="经典海报4">
+        </div>
+    </div>
+
+    <!-- 统一页脚 (100%全跳页脚，素材来源绑定您提供的4个最新域名，底署名为“珍珍仙女出品”) -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>经典剧目</h4>
+                <ul>
+                    <li><a href="peking.html">京剧</a></li>
+                    <li><a href="yue.html">越剧</a></li>
+                    <li><a href="huangmei.html">黄梅戏</a></li>
+                    <li><a href="ping.html">评剧</a></li>
+                    <li><a href="yu.html">豫剧</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>素材来源</h4>
+                <ul>
+                    <li><a href="http://xi-qu.com/" target="_blank">中国戏曲网</a></li>
+                    <li><a href="https://www.china1901.com/#/" target="_blank">中国音网</a></li>
+                    <li><a href="https://www.xikao.com/" target="_blank">中国京剧戏考</a></li>
+                    <li><a href="https://www.bjo.com.cn/" target="_blank">北京京剧院</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>联系我们</h4>
+                <ul>
+                    <li><a href="message.html">点击进入留言板块</a></li>
+                    <li>手机：17864386130</li>
+                    <li>邮箱：3590619453@qq.com</li>
+                </ul>
+            </div>
+            <div class="footer-column footer-mascot">
+                <img src="images/pic14.png" alt="可爱戏剧人物">
+            </div>
+        </div>
+        <div class="footer-bottom-line" style="color: #888; font-size: 13px; font-weight: bold !important; letter-spacing: 1px;">
+            珍珍仙女出品
+        </div>
+    </footer>
+
+    <!-- 原生首屏大图轮播控制JS (已升级为 3 张图高精度水平位移逻辑) -->
+    <script>
+        let slideIndex = 0;
+        const track = document.getElementById("carouselTrack");
+        const totalSlides = document.getElementsByClassName("carousel-item").length; // 会自动计算出3张
+        
+        // 初始化加载
+        showSlides(slideIndex);
+
+        function showSlides(n) {
+            if (n >= totalSlides) { slideIndex = 0; }
+            if (n < 0) { slideIndex = totalSlides - 1; }
+            
+            // 核心计算公式：3张大图，每张占轨道总宽度的 33.333%
+            const offset = -slideIndex * 33.333; 
+            track.style.transform = `translateX(${offset}%)`;
+        }
+        function moveSlide(n) {
+            slideIndex += n;
+            showSlides(slideIndex);
+        }
+        setInterval(() => { moveSlide(1); }, 5000); // 5秒换一张
+    </script>
+</body>
+</html>

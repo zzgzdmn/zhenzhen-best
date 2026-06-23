@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>戏曲行当 - 中国戏曲文化网</title>
+    <!-- 引入核心全局样式表 -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* ==========================================
+           戏曲行当页：专属微调版面样式（100%对齐样图）
+           ========================================== */
+
+        /* 首屏大图轮播：全新升级的 4 张图水平滑行动效（带强制覆盖，100%显现跑动） */
+        .carousel-container {
+            width: 100%;
+            height: 600px;
+            position: relative;
+            overflow: hidden;
+            background-color: #f7f5f0; /* 消除页面首屏载入时的黑屏闪烁 */
+        }
+
+        /* 核心滑轨：4张图，轨道总宽度设为 400% (强制覆盖style.css) */
+        .carousel-track {
+            display: flex !important; /* 强制启用flex横排 */
+            width: 400% !important; 
+            height: 100% !important;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1) !important; /* 平滑滑行曲线 */
+        }
+
+        /* 4张图，每一个轮播项占比 1/4（即 25%），并强制重置不透明度与定位 */
+        .carousel-item {
+            width: 25% !important;
+            height: 100% !important;
+            position: relative !important; /* 强制覆盖 style.css 中的 absolute 绝对定位 */
+            opacity: 1 !important;         /* 强制覆盖 style.css 中的 opacity: 0 隐身属性 */
+            z-index: auto !important;
+        }
+
+        .carousel-item img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            display: block !important;
+        }
+
+        /* 1. 戏曲行当：4列彩色Q版立卡（高度保持 350px 完美展现不裁切） */
+        .role-cards-grid {
+            max-width: 1200px;
+            margin: 40px auto 60px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        .role-card-item {
+            position: relative;
+            height: 350px; /* 高度设为 350px，完全展现Q版画面不裁切 */
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .role-card-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+        }
+
+        .role-card-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 保证Q版角色背景图完全充满卡片 */
+        }
+
+        /* 核心：覆盖于图片底部的耀眼白色文字（生、旦、净、丑），100%物理绝对居中 */
+        .role-card-label {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%); /* 核心：100% 绝对物理居中，任何情况下绝不偏左 */
+            color: #ffffff; /* 绝美纯白字 */
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 8px;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.9), 0 0 15px rgba(0, 0, 0, 0.5); /* 阴影保护 */
+            z-index: 10;
+        }
+
+        .role-card-item:hover .role-card-label {
+            color: #ffffff;
+        }
+
+        /* 2. 行当深度详解：宽度设为与顶部卡片完全一致的 1200px，两端边缘完美对齐切平 */
+        .role-detail-container {
+            max-width: 1200px; /* 调整为 1200px，保证左右两侧上下垂直对齐 */
+            margin: 45px auto 65px;
+            padding: 0 20px; /* 内边距设为 20px，防止边缘像素偏差 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 核心修改：在 1200px 宽度下，高度设为 675px 以锁定完美的 16:9 标准比例 */
+        .role-detail-img {
+            width: 100%;
+            height: 675px; /* 1200px 宽度下，675px 是绝对精确、完美的 16:9 电影级宽幅比例！ */
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.12);
+            margin-bottom: 25px;
+        }
+
+        .role-detail-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .role-detail-text {
+            width: 100%;
+            color: #111111;
+            font-size: 15px;
+            line-height: 1.8;
+            text-align: justify; /* 两端对齐 */
+            text-justify: inter-ideograph;
+        }
+
+        .role-detail-text p {
+            margin-bottom: 15px;
+            text-indent: 2em; /* 首行自动缩进2个中文字符 */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 统一导航栏 -->
+    <header>
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="genres.html">剧种介绍</a></li>
+                <li><a href="artists.html">戏曲名家</a></li>
+                <li class="nav-logo">
+                    <img src="images/pic14.png" alt="中国戏曲Logo">
+                    <span>中国戏曲</span>
+                </li>
+                <li><a href="masks.html">戏曲脸谱</a></li>
+                <li><a href="roles.html" class="active">戏曲行当</a></li>
+                <li><a href="message.html">留言</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- 顶部大轮播图 (全新重轨：pic141.jpg、pic142.jpg、pic143.jpg、pic202.jpg) -->
+    <div class="carousel-container">
+        <!-- 核心物理滑轨 -->
+        <div class="carousel-track" id="carouselTrack">
+            <!-- 图片141 -->
+            <div class="carousel-item"><img src="images/pic141.jpg" alt="行当大轮播1"></div>
+            <!-- 图片142 -->
+            <div class="carousel-item"><img src="images/pic142.jpg" alt="行当大轮播2"></div>
+            <!-- 图片143 -->
+            <div class="carousel-item"><img src="images/pic143.jpg" alt="行当大轮播3"></div>
+            <!-- 新增图片202 -->
+            <div class="carousel-item"><img src="images/pic202.jpg" alt="行当大轮播4"></div>
+        </div>
+        <button class="carousel-btn prev" onclick="moveSlide(-1)">&#10094;</button>
+        <button class="carousel-btn next" onclick="moveSlide(1)">&#10095;</button>
+    </div>
+
+    <!-- 戏曲行当 -->
+    <div class="section-title">
+        <h2>戏曲行当</h2>
+        <p>Operatic Roles</p>
+    </div>
+
+    <!-- 4列行当网格 (对应图片144至图片147，底部白字纯正物理绝对居中：生、旦、净、丑) -->
+    <div class="role-cards-grid">
+        <!-- 生 (图片144) -->
+        <div class="role-card-item hover-effect">
+            <img src="images/pic144.jpg" alt="生行卡片">
+            <div class="role-card-label">生</div>
+        </div>
+        <!-- 旦 (图片145) -->
+        <div class="role-card-item hover-effect">
+            <img src="images/pic145.jpg" alt="旦行卡片">
+            <div class="role-card-label">旦</div>
+        </div>
+        <!-- 净 (图片146) -->
+        <div class="role-card-item hover-effect">
+            <img src="images/pic146.jpg" alt="净行卡片">
+            <div class="role-card-label">净</div>
+        </div>
+        <!-- 丑 (图片147) -->
+        <div class="role-card-item hover-effect">
+            <img src="images/pic147.jpg" alt="丑行卡片">
+            <div class="role-card-label">丑</div>
+        </div>
+    </div>
+
+    <!-- 行当深度详解 (上图下字、1200px完全对齐等宽排版) -->
+    <div class="section-title">
+        <h2>行当深度详解</h2>
+        <p>Introduction to the genre</p>
+    </div>
+
+    <!-- 1. 生行详解 (16:9比例大图，左右边缘100%对齐) -->
+    <div class="role-detail-container">
+        <div class="section-title" style="margin-top:0; margin-bottom: 20px;">
+            <h2 style="font-size: 24px; color: #8c1c1c;">生行：浩然正气</h2>
+        </div>
+        <div class="role-detail-img hover-effect">
+            <!-- 替换为最新指定的：pic160.png -->
+            <img src="images/pic160.png" alt="生行剧照">
+        </div>
+        <div class="role-detail-text">
+            <p>生角是戏曲舞台上最主要的男性正面角色，在整个行当中居于核心地位。按照人物的年龄、身份和武功技能，生行细致地划分为老生、小生、武生、红生以及娃娃生。老生多扮演中年以上的帝王将相或忠义儒雅之士，唱腔极其苍劲淳厚，代表人物有谭鑫培和马连良等。小生则扮演青年男性，唱腔真假声结合，显得清脆儒雅、倜傥潇洒。</p>
+            <p>在戏剧表现中，生行代表着社会的浩然正气与忠武贤德。例如在经典剧目《空城计》中，诸葛亮羽扇纶巾，老生表现得沉稳睿智、泰然自若；而在《挑滑车》中，名将高宠枪挑铁滑车，武生则表现得英勇刚烈、威猛非凡，其身段干脆有力，唱腔宏亮开阔，极具强烈的艺术感染力。</p>
+        </div>
+    </div>
+
+    <!-- 2. 旦行详解 (16:9比例大图，左右边缘100%对齐) -->
+    <div class="role-detail-container">
+        <div class="section-title" style="margin-top:0; margin-bottom: 20px;">
+            <h2 style="font-size: 24px; color: #8c1c1c;">旦行：婉约动人</h2>
+        </div>
+        <div class="role-detail-img hover-effect">
+            <!-- 替换为最新指定的：pic161.png -->
+            <img src="images/pic161.png" alt="旦行剧照">
+        </div>
+        <div class="role-detail-text">
+            <p>旦角是戏曲中扮演女性角色的行当统称，承载着舞台上最温婉唯美的视觉意境。旦行依据人物的性格特征、年龄和身份，严密地划分为正旦（青衣）、花旦、武旦、闺门旦和老旦。正旦扮演端庄、贤淑的女性，唱腔高亢委婉、百转千回；花旦扮演活泼天真少女，身段灵动，语言风趣。一代宗师梅兰芳先生创立梅派艺术，将旦角的声腔与身段美学推向了世界的艺术巅峰。</p>
+            <p>旦行在艺术上象征着女性的温婉、坚韧、聪慧和对忠贞爱情的追求。在《贵妃醉酒》中，杨玉环步态如云，水袖翻飞，将贵妃内心的惆怅与娇柔演绎得淋漓尽致；在《霸王别姬》中，虞姬执双剑起舞，神情坚毅而凄美，旦角以极其细腻的身段与哀婉的声腔，勾勒出中国古典悲剧中最动人心魄的至美一幕。</p>
+        </div>
+    </div>
+
+    <!-- 3. 净行详解 (16:9比例大图，左右边缘100%对齐) -->
+    <div class="role-detail-container">
+        <div class="section-title" style="margin-top:0; margin-bottom: 20px;">
+            <h2 style="font-size: 24px; color: #8c1c1c;">净行：性格强烈</h2>
+        </div>
+        <div class="role-detail-img hover-effect">
+            <!-- 替换为最新指定的：pic162.png -->
+            <img src="images/pic162.png" alt="净行剧照">
+        </div>
+        <div class="role-detail-text">
+            <p>净角俗称花脸，扮演性格、品德或相貌具有极其特殊特征的男性人物。净行的脸谱勾勒繁复，其声腔宏亮宽阔、如黄钟大吕，震耳欲聋；动作幅度宏大开阔，威武粗犷。净角按表演重点分为大花脸（唱功花脸）、二花脸（架子花脸）和武二花。在脸谱色彩中，青红黄黑等斑斓之色勾勒出强烈的忠奸善恶，代表着生命力和力量的宣泄。</p>
+            <p>净行在舞台上象征着社会的法度公义与草莽的英雄胆气。在经典剧目《铡美案》中，净角扮演的铁面宰相包拯，上场时声震屋瓦，字字千钧，用粗犷宽亮的唱腔展示了法不阿贵、铁面无私的凛然正气；而在《长坂坡》中，曹操大花脸尽显雄武与多疑。这种行当动作极具视觉雕塑感，戏剧冲突和视觉张力极为强烈。</p>
+        </div>
+    </div>
+
+    <!-- 4. 丑行详解 (16:9比例大图，左右边缘100%对齐) -->
+    <div class="role-detail-container">
+        <div class="section-title" style="margin-top:0; margin-bottom: 20px;">
+            <h2 style="font-size: 24px; color: #8c1c1c;">丑行：幽默诙谐</h2>
+        </div>
+        <div class="role-detail-img hover-effect">
+            <!-- 替换为最新指定的：pic163.png -->
+            <img src="images/pic163.png" alt="丑行剧照">
+        </div>
+        <div class="role-detail-text">
+            <p>丑角俗称小花脸或三花脸，扮演机智、风趣、幽默或狡黠的喜剧角色，是传统戏剧舞台上不可或缺的润滑剂和调色盘。丑角细分为文丑和武丑，文丑擅长念白与科诨，武丑则要求有极为高超敏捷的武功绝活。其鼻梁处勾画的一块小白豆腐块，是该行当最具辨识度的标志，代表着生活气息与市井百态的缩影。</p>
+            <p>丑行在舞台上常常通过插科打诨和妙趣横生的说白来化解紧张气氛。在经典剧目《群英会》中，文丑蒋干自作聪明、滑稽可笑，将小人物的狡黠刻画得惟妙惟肖；而在《三岔口》中，武丑刘利华在黑暗中的格斗摸索，身轻如燕，动作精妙绝伦。丑行以喜剧化的身段和极具讽刺意味的台词，在寓教于乐中展现了民间智慧和对世俗弊病的辛辣嘲讽。</p>
+        </div>
+    </div>
+
+    <!-- 统一高级黑色底栏 (100%全跳页脚，素材来源绑定您提供的4个最新域名，底署名为“珍珍仙女出品”) -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>经典剧目</h4>
+                <ul>
+                    <li><a href="peking.html">京剧</a></li>
+                    <li><a href="yue.html">越剧</a></li>
+                    <li><a href="huangmei.html">黄梅戏</a></li>
+                    <li><a href="ping.html">评剧</a></li>
+                    <li><a href="yu.html">豫剧</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>素材来源</h4>
+                <ul>
+                    <li><a href="http://xi-qu.com/" target="_blank">中国戏曲网</a></li>
+                    <li><a href="https://www.china1901.com/#/" target="_blank">中国音网</a></li>
+                    <li><a href="https://www.xikao.com/" target="_blank">中国京剧戏考</a></li>
+                    <li><a href="https://www.bjo.com.cn/" target="_blank">北京京剧院</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>联系我们</h4>
+                <ul>
+                    <li><a href="message.html">点击进入留言板块</a></li>
+                    <li>手机：17864386130</li>
+                    <li>邮箱：3590619453@qq.com</li>
+                </ul>
+            </div>
+            <div class="footer-column footer-mascot">
+                <!-- 图片14: Q版戏剧小人。自适应宽高排版 -->
+                <img src="images/pic14.png" alt="可爱戏剧人物">
+            </div>
+        </div>
+        <div class="footer-bottom-line" style="color: #888; font-size: 13px; font-weight: bold !important; letter-spacing: 1px;">
+            珍珍仙女出品
+        </div>
+    </footer>
+
+    <!-- 首屏大轮播图原生JS (已升级为 4 张图高精度水平位移逻辑) -->
+    <script>
+        let slideIndex = 0;
+        const track = document.getElementById("carouselTrack");
+        const totalSlides = document.getElementsByClassName("carousel-item").length; // 会自动计算出 4 张
+        
+        // 初始化加载
+        showSlides(slideIndex);
+
+        function showSlides(n) {
+            if (n >= totalSlides) { slideIndex = 0; }
+            if (n < 0) { slideIndex = totalSlides - 1; }
+            
+            // 核心计算公式：4张大图，每张占轨道总宽度的 25%
+            const offset = -slideIndex * 25; 
+            track.style.transform = `translateX(${offset}%)`;
+        }
+        function moveSlide(n) {
+            slideIndex += n;
+            showSlides(slideIndex);
+        }
+        setInterval(() => { moveSlide(1); }, 5000); // 5秒换一张
+    </script>
+</body>
+</html>

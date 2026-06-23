@@ -1,0 +1,822 @@
+/* ==========================================
+   中国戏曲网页项目 核心CSS样式表
+   ========================================== */
+
+/* 全局重置与中式宣纸底色 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    /* 采用符合戏曲文化特色的中式楷体与宋体，保证古朴厚重的质感 */
+    font-family: "STKaiti", "Kaiti", "KaiTi_GB2312", "SimSun", serif;
+    background-color: #f7f5f0; 
+    /* 核心修改：彻底拿掉半透明的雾面滤镜，100%还原本底图（图片1）的超清晰、秀丽的色彩质感 */
+    background-image: url('../images/pic1.jpg'); 
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #111111; /* 全局字色加深 */
+    line-height: 1.8;
+}
+
+/* 导航栏：完全吻合案例的居中排版与透明透底效果 */
+header {
+    width: 100%;
+    position: absolute; /* 绝对定位，使下方大轮播图可以向上透出 */
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.15); /* 极低不透明度，完美透出底图 */
+    backdrop-filter: blur(5px); /* 磨砂玻璃质感 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    transition: background-color 0.3s;
+}
+
+header:hover {
+    background-color: rgba(255, 255, 255, 0.95); /* 鼠标滑过时变清晰，方便看清字 */
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center; /* 居中对齐 */
+    align-items: center;
+    padding: 15px 20px;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    list-style: none;
+}
+
+.nav-menu li {
+    margin: 0 18px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: #111111;
+    font-size: 16px;
+    font-weight: bold; /* 字体加粗 */
+    transition: all 0.3s ease;
+    padding: 6px 4px;
+    letter-spacing: 1px;
+}
+
+.nav-menu a:hover, .nav-menu a.active {
+    color: #8c1c1c; /* 戏曲经典中国红 */
+    border-bottom: 2px solid #8c1c1c;
+}
+
+/* 导航中部的特殊大LOGO样式 */
+.nav-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 30px;
+}
+
+.nav-logo img {
+    height: 42px;
+    margin-bottom: 2px;
+    transition: transform 0.5s ease;
+}
+
+.nav-logo:hover img {
+    transform: rotate(360deg); /* logo旋转交互 */
+}
+
+.nav-logo span {
+    font-size: 22px; /* 字体加大 */
+    font-weight: 900; /* 字体加粗 */
+    color: #8c1c1c;
+    letter-spacing: 2px;
+}
+
+/* 顶部大轮播图结构 */
+.carousel-container {
+    width: 100%;
+    height: 600px; /* 吻合案例高大气势的封面高度 */
+    position: relative;
+    overflow: hidden;
+    /* 核心修改：将黑底替换为宣纸底色，彻底消除页面载入时的黑屏闪烁 */
+    background-color: #f7f5f0; 
+}
+
+.carousel-slide {
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-item {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out; /* 平滑淡入淡出 */
+    z-index: 1;
+}
+
+.carousel-item.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 轮播图标题文字排版 */
+.carousel-caption {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #ffffff;
+    z-index: 10;
+    text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.8);
+    pointer-events: none;
+}
+
+.carousel-caption h2 {
+    font-size: 56px;
+    letter-spacing: 8px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.carousel-caption p {
+    font-size: 20px;
+    letter-spacing: 4px;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.3);
+    color: #fff;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 24px;
+    z-index: 10;
+    transition: all 0.3s;
+}
+
+.carousel-btn:hover {
+    background: #8c1c1c;
+}
+
+.prev { left: 30px; }
+.next { right: 30px; }
+
+/* 页面大标题：水墨风艺术字排版 */
+.section-title {
+    text-align: center;
+    margin: 60px auto 40px;
+    position: relative;
+}
+
+.section-title h2 {
+    font-size: 32px;
+    font-weight: bold;
+    color: #111111;
+    letter-spacing: 4px;
+}
+
+/* 核心修复：还原页面大标题下方的浅色、小巧、绝对居中英文副标题，彻底消除“英文跑到最左边边框”的Bug */
+.section-title p {
+    color: #777777 !important; /* 恢复雅致浅灰色 */
+    font-size: 14px !important;
+    font-weight: normal !important; /* 恢复普通字重，不加粗 */
+    text-transform: uppercase;
+    margin-top: 8px !important;
+    letter-spacing: 1px !important;
+    text-align: center !important; /* 强制物理绝对居中对齐 */
+    display: block !important;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    background-color: #8c1c1c;
+    margin: 12px auto 0;
+}
+
+/* 鼠标悬停动态特效（图片放大、整体悬浮、发光阴影） */
+.hover-effect {
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    cursor: pointer;
+}
+
+.hover-effect img {
+    transition: transform 0.6s ease;
+}
+
+.hover-effect:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(140, 28, 28, 0.15);
+}
+
+.hover-effect:hover img {
+    transform: scale(1.08); /* 图片平滑放大 */
+}
+
+/* 传统艺术：三栏卡片式布局 */
+.features-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    padding: 0 20px;
+}
+
+.feature-card {
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e2e2e2;
+}
+
+.feature-img-wrapper {
+    width: 100%;
+    height: 240px;
+    overflow: hidden;
+}
+
+.feature-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.feature-info {
+    padding: 25px;
+}
+
+.feature-info h3 {
+    font-size: 20px;
+    color: #8c1c1c;
+    margin-bottom: 12px;
+    font-weight: bold;
+}
+
+/* 核心优化：将正文文字加深至接近纯黑、且设为粗体，极大地改善纸张底色上的可读性 */
+p {
+    font-size: 15px;
+    color: #111111 !important; /* 字体颜色加深，彻底告别浅灰色 */
+    font-weight: bold !important; /* 正文字体加粗 */
+    text-align: justify;
+    line-height: 1.8;
+}
+
+/* 舞台艺术相册：完全对称、完全对齐 1200px 布局 */
+.stage-art-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 20px; /* 左右分栏板块间距 */
+    padding: 0 20px;
+}
+
+/* 左侧大图：比例高度完全对齐右侧 */
+.stage-art-left {
+    flex: 1;
+    height: 420px; /* 锁定高度为 420px */
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.stage-art-left img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 右侧：2x2 完美对称网格 */
+.stage-art-right {
+    flex: 2;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px; /* 上下左右格子间距 */
+    height: 420px;
+}
+
+.stage-art-thumb {
+    border-radius: 8px;
+    overflow: hidden;
+    height: 200px; /* 两个小图高度(200+200)加上20px间距刚好等于 420px，上下边缘完美切齐 */
+}
+
+.stage-art-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 特色横幅板块两栏（戏曲名家、戏曲脸谱） */
+.info-row {
+    max-width: 1200px;
+    margin: 40px auto;
+    background: #ffffff;
+    border-radius: 8px;
+    display: flex;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid #e0e0e0;
+}
+
+.info-text {
+    flex: 2;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.info-text h3 {
+    font-size: 24px;
+    color: #111111;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.info-text p {
+    margin-bottom: 25px;
+}
+
+.info-img {
+    flex: 1;
+    height: 250px;
+    overflow: hidden;
+}
+
+.info-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 传统质感红按钮 */
+.btn-red {
+    display: inline-block;
+    background: #8c1c1c;
+    color: #ffffff;
+    padding: 10px 24px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: bold;
+    align-self: flex-start;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-red:hover {
+    background: #b52424;
+    box-shadow: 0 4px 12px rgba(140, 28, 28, 0.3);
+}
+
+/* ==========================================
+   全新重构的黑色高级底栏（完全对齐案例）
+   ========================================== */
+footer {
+    background-color: #1a1a1a;
+    color: #b0b0b0;
+    padding: 50px 20px 30px;
+    margin-top: 80px;
+    font-size: 14px;
+    border-top: 4px solid #8c1c1c;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+}
+
+.footer-column h4 {
+    color: #ffffff;
+    margin-bottom: 20px;
+    font-size: 17px;
+    border-left: 3px solid #8c1c1c;
+    padding-left: 10px;
+    font-weight: bold;
+}
+
+.footer-column ul {
+    list-style: none;
+}
+
+.footer-column ul li {
+    margin-bottom: 10px;
+}
+
+.footer-column a {
+    color: #b0b0b0;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-column a:hover {
+    color: #8c1c1c;
+}
+
+.footer-mascot {
+    text-align: center;
+}
+
+/* 核心优化：去除了强制固定的图片尺寸，改写为高度自适应比例，完美容纳透明抠图 */
+.footer-mascot img {
+    max-width: 100%;
+    height: auto !important; /* 允许高度随图片自适应 */
+    max-height: 150px; /* 限制最大高度，防止大图撑破底栏 */
+    display: block;
+    margin: 0 auto;
+}
+
+.footer-bottom-line {
+    max-width: 1200px;
+    margin: 30px auto 0;
+    padding-top: 20px;
+    border-top: 1px solid #333333;
+    text-align: center;
+    font-size: 12px;
+}
+
+/* ==========================================
+   名家与脸谱 网格卡片系统
+   ========================================== */
+.card-grid-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 0 20px;
+}
+
+.item-card {
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    text-align: center;
+}
+
+.item-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 12px;
+}
+
+.item-card h3 {
+    font-size: 18px;
+    color: #111111;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.item-card p {
+    font-size: 14px;
+    color: #666666;
+}
+
+/* ==========================================
+   【独家精准微调】：仅针对“剧种诗说”5列竖幅长图进行完美微调（100%对齐样例图片）
+   ========================================== */
+.card-grid-container[style*="repeat(5, 1fr)"] {
+    gap: 15px; /* 微调间距，显得更紧凑 */
+    margin-bottom: 50px;
+}
+
+/* 5个卡片设为相对定位，使文字可以绝对定位覆盖在图片底部 */
+.card-grid-container[style*="repeat(5, 1fr)"] .item-card {
+    position: relative;
+    height: 350px; /* 强制呈现 3:4 / 9:16 高雅竖直长方形比例 */
+    padding: 0;    /* 边距设为 0，使图片平铺占满整个卡片 */
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.06);
+}
+
+/* 图片平铺卡片 */
+.card-grid-container[style*="repeat(5, 1fr)"] .item-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 居中裁剪不拉伸 */
+    margin: 0;
+    border-radius: 8px;
+}
+
+/* 将汉字标题（京剧、豫剧、越剧等）绝对定位在图片上，并设为耀眼白色 */
+.card-grid-container[style*="repeat(5, 1fr)"] .item-card h3 {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    color: #ffffff; /* 字体设为耀眼白色，完全契合图片效果 */
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    /* 加入文字黑影保护：确保即使图片底色很亮，文字也能清晰可读 */
+    text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+}
+
+/* ==========================================
+   戏曲脸谱专属：完全对齐样图的透明抠图大图网格样式组
+   ========================================== */
+.mask-grid {
+    max-width: 1200px;
+    margin: 40px auto 60px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 45px 20px; /* 行间距45px，列间距20px */
+    padding: 0 20px;
+}
+
+.mask-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 水平方向完全居中 */
+    justify-content: center; /* 垂直方向完全居中 */
+    text-align: center;
+    background: none !important; /* 强制彻底去除白色背景 */
+    border: none !important;     /* 强制彻底去除边框线 */
+    box-shadow: none !important; /* 强制彻底去除阴影 */
+    cursor: pointer;
+}
+
+/* 戏曲脸谱图片：强制拉大为 220px 宽度、280px 高度，保证透明抠图等比缩放、居中 */
+.mask-item img {
+    width: 220px !important; 
+    height: 280px !important;
+    object-fit: contain; /* 保证透明面具抠图在其内部完美等比缩放、居中不拉伸 */
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    display: block;
+    margin: 0 auto; /* 水平绝对居中 */
+    z-index: 5;
+}
+
+/* 鼠标滑过时脸谱平滑放大 1.1 倍 */
+.mask-item:hover img {
+    transform: scale(1.1);
+}
+
+/* 脸谱汉字标题：转换为完全对齐案例的扎实纯黑色 */
+.mask-item h3 {
+    font-size: 17px;
+    color: #111111 !important; /* 字体设为完全对齐样图的扎实深黑色 */
+    font-weight: bold;
+    margin-top: 15px; /* 预留足够的呼吸感间距 */
+    letter-spacing: 1.5px;
+}
+
+/* ==========================================
+   导航栏最右侧独立胶囊登录按钮 (完美保留中部中轴对称美感)
+   ========================================== */
+.nav-login-btn {
+    position: absolute;
+    right: 40px; /* 悬浮于导航栏绝对最右侧 */
+    top: 50%;
+    transform: translateY(-50%);
+    border: 1.5px solid #8c1c1c; /* 戏曲传统红框 */
+    color: #8c1c1c !important;
+    background: none;
+    padding: 6px 18px;
+    border-radius: 20px; /* 药丸/胶囊形状 */
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+.nav-login-btn:hover {
+    background-color: #8c1c1c;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(140, 28, 28, 0.25);
+}
+
+/* ==========================================
+   留言表单系统
+   ========================================== */
+.message-box {
+    max-width: 750px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    border: 1px solid #e0e0e0;
+}
+
+.form-group-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-field label {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.form-input {
+    padding: 12px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.form-input:focus {
+    border-color: #8c1c1c;
+    outline: none;
+}
+
+/* 动感十足的无障碍图片放大查看器 (Lightbox) */
+#lightbox-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.9);
+    justify-content: center;
+    align-items: center;
+}
+
+#lightbox-img {
+    max-width: 85%;
+    max-height: 85%;
+    box-shadow: 0 0 25px rgba(255,255,255,0.25);
+    border-radius: 4px;
+}
+
+/* ==========================================
+   全新重构：完全对齐样例的留言板专用样式
+   ========================================== */
+
+/* 留言区域容器：背景设为图片1（水墨山水画） */
+.message-section {
+    background-image: url('../images/pic1.jpg'); /* 图片1: 全局山水背景图 */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 80px 20px; /* 上下预留足够间距露出背景山水 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 居中的白色卡片：完全契合图片比例 */
+.message-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 900px;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12); /* 柔和阴影 */
+    padding: 45px 50px;
+    border: 1px solid #eef2f5;
+    text-align: left;
+}
+
+/* 标题样式：在线留言 */
+.message-title-container {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.message-title-container h2 {
+    font-size: 30px;
+    font-weight: bold;
+    color: #8c1c1c; /* 中国红 */
+    letter-spacing: 4px;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+/* 标题下方经典的装饰细红线 */
+.message-title-container h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 25%;
+    width: 50%;
+    height: 3px;
+    background-color: #8c1c1c;
+}
+
+/* 灰色提示框：完全一致的左侧红边与文字排版 */
+.message-alert-box {
+    background-color: #f7f7f7;
+    border-left: 4px solid #8c1c1c;
+    padding: 20px;
+    font-size: 15px;
+    color: #333333;
+    border-radius: 0 4px 4px 0;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+/* 表单两列网格布局：姓名/电话、邮箱/主题 */
+.message-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 35px; /* 列间距35px，行间距20px */
+    margin-bottom: 25px;
+}
+
+.message-form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 独占一整行的留言内容文本域 */
+.message-form-group.full-width {
+    grid-column: span 2;
+}
+
+.message-form-group label {
+    font-size: 15px;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 8px;
+}
+
+/* 输入框和文本域细节：极细边框，质感微灰 */
+.message-form-group input,
+.message-form-group textarea {
+    padding: 12px 15px;
+    border: 1px solid #e2e2e2;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 14px;
+    color: #333333;
+    background-color: #fafafa;
+    transition: all 0.3s ease;
+}
+
+/* 聚焦状态下的输入框微光动效 */
+.message-form-group input:focus,
+.message-form-group textarea:focus {
+    border-color: #8c1c1c;
+    background-color: #ffffff;
+    outline: none;
+    box-shadow: 0 0 8px rgba(140, 28, 28, 0.08);
+}
+
+/* 提交按钮：红底白字，圆角，大字号 */
+.message-submit-btn {
+    width: 100%;
+    background-color: #8c1c1c;
+    color: #ffffff;
+    border: none;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 15px;
+    letter-spacing: 2px;
+}
+
+.message-submit-btn:hover {
+    background-color: #b52424;
+}

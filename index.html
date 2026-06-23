@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>首页 - 中国戏曲文化网</title>
+    <!-- 引入核心样式表 -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* ==========================================
+           首屏大图轮播：全新升级的 3 张图水平滑行动效（带强制覆盖，100%显现跑动）
+           ========================================== */
+        .carousel-container {
+            width: 100%;
+            height: 600px;
+            position: relative;
+            overflow: hidden;
+            background-color: #f7f5f0; /* 消除页面首屏载入时的黑屏闪烁 */
+        }
+
+        /* 核心滑轨：3张图，轨道总宽度设为 300%（强制覆盖style.css） */
+        .carousel-track {
+            display: flex !important; /* 强制启用flex横排 */
+            width: 300% !important; 
+            height: 100% !important;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1) !important; /* 平滑滑行曲线 */
+        }
+
+        /* 3张图，每一个轮播项占比 1/3（即 33.333%），并强制重置不透明度与定位 */
+        .carousel-item {
+            width: 33.333% !important;
+            height: 100% !important;
+            position: relative !important; /* 强制覆盖 style.css 中的 absolute 绝对定位 */
+            opacity: 1 !important;         /* 强制覆盖 style.css 中的 opacity: 0 隐身属性 */
+            z-index: auto !important;
+        }
+
+        .carousel-item img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            display: block !important;
+        }
+
+        /* 核心修复：强制将首页大屏轮播图下方的中式副标题文字转换为耀眼纯白色（带黑影保护，解决变黑变暗看不清问题） */
+        .carousel-caption p {
+            color: #ffffff !important; /* 100% 强制转换为纯白色 */
+            font-size: 20px !important;
+            font-weight: bold !important;
+            letter-spacing: 4px !important;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.95), 0 0 15px rgba(0, 0, 0, 0.6) !important; /* 强投影保护 */
+            text-align: center !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 全局半透明悬浮导航栏 -->
+    <header>
+        <div class="nav-container" style="position: relative; width: 100%;">
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">首页</a></li>
+                <li><a href="genres.html">剧种介绍</a></li>
+                <li><a href="artists.html">戏曲名家</a></li>
+                
+                <!-- 中部醒目LOGO -->
+                <li class="nav-logo">
+                    <!-- 图片14: 导航栏Logo小图标 -->
+                    <img src="images/pic14.png" alt="中国戏曲Logo">
+                    <span>中国戏曲</span>
+                </li>
+                
+                <li><a href="masks.html">戏曲脸谱</a></li>
+                <li><a href="roles.html">戏曲行当</a></li>
+                <li><a href="message.html">留言</a></li>
+            </ul>
+            <!-- 右侧独立悬浮胶囊登录按钮 -->
+            <a href="login.html" class="nav-login-btn">登录 / 注册</a>
+        </div>
+    </header>
+
+    <!-- 顶部大轮播图 (3张通用大屏图，展现中华戏曲底韵：pic2.jpg、pic3.jpg、pic33.jpg) -->
+    <div class="carousel-container">
+        <!-- 核心物理滑轨 -->
+        <div class="carousel-track" id="carouselTrack">
+            
+            <!-- 第一幅（图片2）：弘扬戏曲国粹 -->
+            <div class="carousel-item">
+                <img src="images/pic2.png" alt="戏曲国粹">
+                <div class="carousel-caption">
+                    <h2>戏曲国粹</h2>
+                    <p>粉墨演生辉 · 锣鼓震乾坤</p>
+                </div>
+            </div>
+            
+            <!-- 第二幅（图片3）：弘扬华夏戏韵 -->
+            <div class="carousel-item">
+                <img src="images/pic3.png" alt="华夏戏韵">
+                <div class="carousel-caption">
+                    <h2>华夏戏韵</h2>
+                    <p>一唱吟千古 · 舞袖动神州</p>
+                </div>
+            </div>
+            
+            <!-- 第三幅（图片33）：弘扬粉墨人生 -->
+            <div class="carousel-item">
+                <img src="images/pic33.png" alt="粉墨人生">
+                <div class="carousel-caption">
+                    <h2>粉墨人生</h2>
+                    <p>瞬息演百态 · 咫尺见乾坤</p>
+                </div>
+            </div>
+            
+        </div>
+        <!-- 左右切换双功能物理箭头 -->
+        <button class="carousel-btn prev" onclick="moveSlide(-1)">&#10094;</button>
+        <button class="carousel-btn next" onclick="moveSlide(1)">&#10095;</button>
+    </div>
+
+    <!-- 传统艺术魅力板 -->
+    <div class="section-title">
+        <h2>传统艺术：独特的艺术魅力</h2>
+        <p>Unique Artistic Charm</p>
+    </div>
+
+    <div class="features-grid">
+        <!-- 卡片1 -->
+        <div class="feature-card hover-effect" onclick="window.location.href='genres.html'">
+            <div class="feature-img-wrapper">
+                <!-- 图片4: 综合性展示图 -->
+                <img src="images/pic4.jpg" alt="综合性">
+            </div>
+            <div class="feature-info">
+                <h3>综合性</h3>
+                <p>中国戏曲是一种高度综合的艺术形式，它集唱、做、念、打等多种表演艺术于一体，要求演员掌握唱腔、身段、白口与武打等多项身手。</p>
+            </div>
+        </div>
+        <!-- 卡片2 -->
+        <div class="feature-card hover-effect" onclick="window.location.href='genres.html'">
+            <div class="feature-img-wrapper">
+                <!-- 图片5: 虚拟性展示图 -->
+                <img src="images/pic5.jpg" alt="虚拟性">
+            </div>
+            <div class="feature-info">
+                <h3>虚拟性</h3>
+                <p>中国戏曲在表现生活时，注重以虚拟的方式展现现实场景和人物情感。通过特定的动作姿态来模拟开门、关门、骑马、划船等动作。</p>
+            </div>
+        </div>
+        <!-- 卡片3 -->
+        <div class="feature-card hover-effect" onclick="window.location.href='genres.html'">
+            <div class="feature-img-wrapper">
+                <!-- 图片6: 程式性展示图 -->
+                <img src="images/pic6.jpg" alt="程式性">
+            </div>
+            <div class="feature-info">
+                <h3>程式性</h3>
+                <p>中国戏曲在表演上讲究程式化，即按照一定的规则与套路进行表演。唱腔、动作、服装都经过长期的艺术实践和总结而成。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 戏曲舞台艺术 (完全对称、完全对齐 1200px 版心布局) -->
+    <div class="section-title">
+        <h2>戏曲舞台艺术</h2>
+        <p>Performing Arts of Chinese Opera</p>
+    </div>
+
+    <div class="stage-art-section">
+        <!-- 左侧大长图：图片7 -->
+        <div class="stage-art-left hover-effect lightbox-trigger">
+            <img src="images/pic7.jpg" alt="左侧长图">
+        </div>
+        
+        <!-- 右侧对称小图网格：图片8 至 图片11 -->
+        <div class="stage-art-right">
+            <!-- 图片8 -->
+            <div class="stage-art-thumb hover-effect lightbox-trigger">
+                <img src="images/pic8.jpg" alt="舞台小图1">
+            </div>
+            <!-- 图片9 -->
+            <div class="stage-art-thumb hover-effect lightbox-trigger">
+                <img src="images/pic9.jpg" alt="舞台小图2">
+            </div>
+            <!-- 图片10 -->
+            <div class="stage-art-thumb hover-effect lightbox-trigger">
+                <img src="images/pic10.jpg" alt="舞台小图3">
+            </div>
+            <!-- 图片11 -->
+            <div class="stage-art-thumb hover-effect lightbox-trigger">
+                <img src="images/pic11.jpg" alt="舞台小图4">
+            </div>
+        </div>
+    </div>
+
+    <!-- 中国戏曲特色区 -->
+    <div class="section-title">
+        <h2>中国戏曲特色</h2>
+        <p>Characteristics of Chinese Opera</p>
+    </div>
+
+    <!-- 戏曲名家：图在右 (已一律换成中文：和，字色墨黑加粗) -->
+    <div class="info-row">
+        <div class="info-text">
+            <h3>戏曲名家</h3>
+            <p>本栏目汇聚了戏曲界璀璨的明星大师阵容。这里不仅生动展示了京剧“梅派”创始人梅兰芳的雍容华贵、豫剧“常派”开创者常香玉的铿锵激昂，还深度呈现了越剧泰斗袁雪芬的典雅委婉和黄梅戏大师严凤英的清丽淳朴。通过珍贵的舞台影像和生平介绍，带您深度领略多位戏曲名家在漫长艺术生涯中锤炼出的独特唱腔和流派传承力量。</p>
+            <a href="artists.html" class="btn-red">查看更多</a>
+        </div>
+        <div class="info-img hover-effect lightbox-trigger">
+            <!-- 图片12: 戏曲名家风采展示图 -->
+            <img src="images/pic12.jpg" alt="戏曲名家">
+        </div>
+    </div>
+
+    <!-- 戏曲脸谱：图在左 (已一律换成中文：和，字色墨黑加粗) -->
+    <div class="info-row">
+        <div class="info-img hover-effect lightbox-trigger">
+            <!-- 图片13: 戏曲脸谱展示图 -->
+            <img src="images/pic13.jpg" alt="戏曲脸谱">
+        </div>
+        <div class="info-text">
+            <h3>戏曲脸谱</h3>
+            <p>戏曲脸谱是探索古典戏曲视觉美学的独特窗口。脸谱源远流长，其根源可追溯至南北朝时期的假面歌舞和古代祭祀傩戏。在漫长的演变中，脸谱逐渐形成了严密的艺术规范与斑斓的色彩谱系。戏曲艺术中，颜色代表着不同角色的灵魂温度：红色代表赤胆忠心和忠勇侠义，黑色代表铁面无私和刚直不阿，白色则象征阴险狡诈和城府极深。通过了解脸谱的勾勒笔法与敷色奥秘，即可读懂面具背后复杂的性格暗示和深厚文化寓意。</p>
+            <a href="masks.html" class="btn-red">查看更多</a>
+        </div>
+    </div>
+
+    <!-- 统一底栏 (100%全跳页脚，素材来源绑定您提供的4个最新域名，底署名为“珍珍仙女出品”) -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>经典剧目</h4>
+                <ul>
+                    <li><a href="peking.html">京剧</a></li>
+                    <li><a href="yue.html">越剧</a></li>
+                    <li><a href="huangmei.html">黄梅戏</a></li>
+                    <li><a href="ping.html">评剧</a></li>
+                    <li><a href="yu.html">豫剧</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>素材来源</h4>
+                <ul>
+                    <li><a href="http://xi-qu.com/" target="_blank">中国戏曲网</a></li>
+                    <li><a href="https://www.china1901.com/#/" target="_blank">中国音网</a></li>
+                    <li><a href="https://www.xikao.com/" target="_blank">中国京剧戏考</a></li>
+                    <li><a href="https://www.bjo.com.cn/" target="_blank">北京京剧院</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>联系我们</h4>
+                <ul>
+                    <li><a href="message.html">点击进入留言板块</a></li>
+                    <li>手机：17864386130</li>
+                    <li>邮箱：3590619453@qq.com</li>
+                </ul>
+            </div>
+            <div class="footer-column footer-mascot">
+                <img src="images/pic14.png" alt="可爱戏剧人物">
+            </div>
+        </div>
+        <div class="footer-bottom-line" style="color: #888; font-size: 13px; font-weight: bold !important; letter-spacing: 1px;">
+            珍珍仙女出品
+        </div>
+    </footer>
+
+    <!-- 图片无缝放大查看模态框 -->
+    <div id="lightbox-modal" onclick="this.style.display='none'">
+        <img id="lightbox-img" src="" alt="放大查看">
+    </div>
+
+    <!-- 原生部滑行动效JS逻辑 -->
+    <script>
+        // 1. 绝对安全的水平滑轨轮播控制 (闭包沙箱隔离，安全防阻断)
+        (function() {
+            let slideIndex = 0;
+            const track = document.getElementById("carouselTrack");
+            if (!track) return; // 安全防护
+
+            const slides = track.getElementsByClassName("carousel-item");
+            const totalSlides = slides.length; // 会自动计算出3张
+            if (totalSlides === 0) return;
+
+            function showSlides(n) {
+                if (n >= totalSlides) { slideIndex = 0; }
+                if (n < 0) { slideIndex = totalSlides - 1; }
+                
+                // 核心计算公式：3张大图，每张占轨道总宽度的 33.333%
+                const offset = -slideIndex * 33.333; 
+                track.style.transform = `translateX(${offset}%)`;
+            }
+
+            window.moveSlide = function(n) {
+                slideIndex += n;
+                showSlides(slideIndex);
+            }
+
+            // 初始化加载
+            showSlides(slideIndex);
+            setInterval(() => { window.moveSlide(1); }, 5000); // 5秒自动滑动一轮
+        })();
+
+        // 2. 点击图片灯箱放大
+        const triggers = document.querySelectorAll(".lightbox-trigger img");
+        const modal = document.getElementById("lightbox-modal");
+        const modalImg = document.getElementById("lightbox-img");
+        triggers.forEach(img => {
+            img.style.cursor = "zoom-in";
+            img.addEventListener("click", (e) => {
+                e.stopPropagation();
+                modal.style.display = "flex";
+                modalImg.src = img.src;
+            });
+        });
+    </script>
+</body>
+</html>

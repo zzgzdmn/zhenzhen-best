@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>评剧详情 - 中国戏曲文化网</title>
+    <!-- 引入核心全局样式表 -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* ==========================================
+           首屏大图轮播：全新升级的 3 张图水平滑行动效（带强制覆盖，100%显现跑动）
+           ========================================== */
+        .carousel-container {
+            width: 100%;
+            height: 600px;
+            position: relative;
+            overflow: hidden;
+            background-color: #f7f5f0; /* 消除页面首屏载入时的黑屏闪烁 */
+        }
+
+        /* 核心滑轨：3张图，轨道总宽度设为 300%（强制覆盖style.css） */
+        .carousel-track {
+            display: flex !important; /* 强制启用flex横排 */
+            width: 300% !important; 
+            height: 100% !important;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1) !important; /* 平滑滑行曲线 */
+        }
+
+        /* 3张图，每一个轮播项占比 1/3（即 33.333%），并强制重置不透明度与定位 */
+        .carousel-item {
+            width: 33.333% !important;
+            height: 100% !important;
+            position: relative !important; /* 强制覆盖 style.css 中的 absolute 绝对定位 */
+            opacity: 1 !important;         /* 强制覆盖 style.css 中的 opacity: 0 隐身属性 */
+            z-index: auto !important;
+        }
+
+        .carousel-item img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            display: block !important;
+        }
+
+        .ping-art-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 0 20px;
+        }
+        .ping-art-item {
+            height: 280px;
+            overflow: hidden;
+            border-radius: 6px;
+        }
+        .ping-art-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 经典评剧专属 3:4 竖版海报卡片排版 (完全对齐经典越剧、经典京剧) */
+        .ping-poster-grid {
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 0 10px;
+        }
+
+        .ping-poster-card {
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #e2e2e2;
+            padding: 10px; /* 精简内边距 */
+            height: 330px; /* 强制高度为 330px，与其他详情页高度绝对一致 */
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .ping-poster-card img {
+            width: 100%;
+            height: 100%; /* 图片平铺占满整个卡片 */
+            object-fit: cover; /* 居中裁剪不拉伸 */
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 统一导航栏 -->
+    <header>
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="genres.html">剧种介绍</a></li>
+                <li><a href="artists.html">戏曲名家</a></li>
+                <li class="nav-logo">
+                    <img src="images/pic14.png" alt="中国戏曲Logo">
+                    <span>中国戏曲</span>
+                </li>
+                <li><a href="masks.html">戏曲脸谱</a></li>
+                <li><a href="roles.html">戏曲行当</a></li>
+                <li><a href="message.html">留言</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- 顶部大轮播图 (对应 pic84.jpg、pic85.jpg、pic86.jpg) -->
+    <div class="carousel-container">
+        <!-- 核心物理滑轨 -->
+        <div class="carousel-track" id="carouselTrack">
+            <!-- 图片84 -->
+            <div class="carousel-item"><img src="images/pic84.jpg" alt="评剧封面1"></div>
+            <!-- 图片85 -->
+            <div class="carousel-item"><img src="images/pic85.jpg" alt="评剧封面2"></div>
+            <!-- 图片86 -->
+            <div class="carousel-item"><img src="images/pic86.jpg" alt="评剧封面3"></div>
+        </div>
+        <button class="carousel-btn prev" onclick="moveSlide(-1)">&#10094;</button>
+        <button class="carousel-btn next" onclick="moveSlide(1)">&#10095;</button>
+    </div>
+
+    <!-- 评剧艺术 -->
+    <div class="section-title">
+        <h2>评剧艺术</h2>
+        <p>The Art of Drama</p>
+    </div>
+
+    <div class="ping-art-grid">
+        <!-- 图片87 至 图片90 -->
+        <div class="ping-art-item hover-effect"><img src="images/pic87.jpg" alt="艺术照1"></div>
+        <div class="ping-art-item hover-effect"><img src="images/pic88.jpg" alt="艺术照2"></div>
+        <div class="ping-art-item hover-effect"><img src="images/pic89.jpg" alt="艺术照3"></div>
+        <div class="ping-art-item hover-effect"><img src="images/pic90.jpg" alt="艺术照4"></div>
+    </div>
+
+    <!-- 历史渊源 (已替换 English and 单词) -->
+    <div class="section-title">
+        <h2>历史渊源</h2>
+        <p>Historical origins</p>
+    </div>
+
+    <div class="info-row">
+        <div class="info-img hover-effect" style="flex: 0.6; height: 220px;">
+            <!-- 图片91 -->
+            <img src="images/pic91.jpg" alt="历史渊源">
+        </div>
+        <div class="info-text">
+            <p style="line-height: 1.8; font-size: 14px; text-align: justify;">评剧起源于清末河北滦县一带有民间的莲花落，后发展为“唐山落子”。吸收了东北民间歌舞“蹦蹦”以及辽宁西部“二人转”的唱法，将莲花落“单口”、“对口”形式，变成充分戏剧化的“折出”形式，取名“平腔”。1909年，在梆子、京剧乐师的帮助下，吸收了梆子、京剧、皮影的鼓经、唱腔，以及戏曲、秧歌等表演程式与动作，又将“折出”变成了较为全面的戏曲形式，从而诞生了有自己的艺术特点的新剧种——“平腔梆子”。经过“唐山落子”与“奉天落子”两个发展和补充阶段，于1924年正式定名为评剧。</p>
+        </div>
+    </div>
+
+    <!-- 艺术特点 -->
+    <div class="section-title">
+        <h2>艺术特点</h2>
+        <p>Artistic features</p>
+    </div>
+
+    <div class="info-row">
+        <div class="info-text">
+            <h3>艺术特点</h3>
+            <p style="line-height: 1.8; font-size: 14px; text-align: justify;">评剧以通俗易懂的语言和音乐风格著称，富有浓厚的生活气息 and 强烈的表现力。唱腔朴素、生动、健康、细腻，其板式有慢板、二六、快板、散板四类。伴奏乐器丰富，除主要的梆子板胡外，还有二胡、中胡、低胡、三弦、琵琶、竹笛、笙等。以唱功见长。评剧表演中，唱功占极重要地位，演员通过精湛的唱功将剧情和人物情感生动地传达给观众。吐字清楚，唱词浅显易懂，使得观众能够轻松理解剧情和人物对话。表演生活气息浓厚。评剧的表演形式活泼、自由，善于表现当代人民的生活和情感。</p>
+        </div>
+        <div class="info-img hover-effect" style="flex: 0.6; height: 220px;">
+            <!-- 图片92 -->
+            <img src="images/pic92.jpg" alt="艺术特点">
+        </div>
+    </div>
+
+    <!-- 经典评剧 (全新竖幅海报卡片网格，彻底对齐越剧与京剧比例) -->
+    <div class="section-title">
+        <h2>经典评剧</h2>
+        <p>Classic Drama opera</p>
+    </div>
+
+    <div class="ping-poster-grid">
+        <!-- 卡片 1 (图片93: 无字纯图) -->
+        <div class="ping-poster-card hover-effect">
+            <img src="images/pic93.jpg" alt="经典海报1">
+        </div>
+        <!-- 卡片 2 (图片94: 无字纯图) -->
+        <div class="ping-poster-card hover-effect">
+            <img src="images/pic94.jpg" alt="经典海报2">
+        </div>
+        <!-- 卡片 3 (图片95: 无字纯图) -->
+        <div class="ping-poster-card hover-effect">
+            <img src="images/pic95.jpg" alt="经典海报3">
+        </div>
+        <!-- 卡片 4 (图片96: 无字纯图) -->
+        <div class="ping-poster-card hover-effect">
+            <img src="images/pic96.jpg" alt="经典海报4">
+        </div>
+    </div>
+
+    <!-- 统一高级黑色底栏 -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>经典剧目</h4>
+                <ul>
+                    <li><a href="peking.html">京剧</a></li>
+                    <li><a href="yue.html">越剧</a></li>
+                    <li><a href="huangmei.html">黄梅戏</a></li>
+                    <li><a href="ping.html">评剧</a></li>
+                    <li><a href="yu.html">豫剧</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>素材来源</h4>
+                <ul>
+                    <li><a href="http://xi-qu.com/" target="_blank">中国戏曲网</a></li>
+                    <li><a href="https://www.china1901.com/#/" target="_blank">中国音网</a></li>
+                    <li><a href="https://www.xikao.com/" target="_blank">中国京剧戏考</a></li>
+                    <li><a href="https://www.bjo.com.cn/" target="_blank">北京京剧院</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>联系我们</h4>
+                <ul>
+                    <li><a href="message.html">点击进入留言板块</a></li>
+                    <li>手机：17864386130</li>
+                    <li>邮箱：3590619453@qq.com</li>
+                </ul>
+            </div>
+            <div class="footer-column footer-mascot">
+                <img src="images/pic14.png" alt="可爱戏剧人物">
+            </div>
+        </div>
+        <div class="footer-bottom-line" style="color: #888; font-size: 13px; font-weight: bold !important; letter-spacing: 1px;">
+            珍珍仙女出品
+        </div>
+    </footer>
+
+    <!-- 首屏大轮播图原生JS (已更新为高精度物理滑位移算法) -->
+    <script>
+        let slideIndex = 0;
+        const track = document.getElementById("carouselTrack");
+        const totalSlides = document.getElementsByClassName("carousel-item").length; // 会自动计算出3张
+        
+        // 初始化加载
+        showSlides(slideIndex);
+
+        function showSlides(n) {
+            if (n >= totalSlides) { slideIndex = 0; }
+            if (n < 0) { slideIndex = totalSlides - 1; }
+            
+            // 核心计算公式：3张大图，每张占轨道总宽度的 33.333%
+            const offset = -slideIndex * 33.333; 
+            track.style.transform = `translateX(${offset}%)`;
+        }
+        function moveSlide(n) {
+            slideIndex += n;
+            showSlides(slideIndex);
+        }
+        setInterval(() => { moveSlide(1); }, 5000); // 5秒自动滑动一轮
+    </script>
+</body>
+</html>

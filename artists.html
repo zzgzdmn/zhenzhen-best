@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>戏曲名家 - 中国戏曲文化网</title>
+    <!-- 引入核心全局样式表 -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* ==========================================
+           首屏大图轮播：全新主图水平滑行动效（带!important强制覆盖，100%显现跑动）
+           ========================================== */
+        .carousel-container {
+            width: 100%;
+            height: 600px;
+            position: relative;
+            overflow: hidden;
+            background-color: #1a1a1a;
+        }
+
+        /* 核心滑轨：3张图，轨道总宽度设为 300%（强制覆盖style.css） */
+        .carousel-track {
+            display: flex !important; /* 强制启用flex横排 */
+            width: 300% !important; 
+            height: 100% !important;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1) !important; /* 平滑滑行曲线 */
+        }
+
+        /* 3张图，每一个轮播项占比 1/3（即 33.333%），并强制重置不透明度与定位 */
+        .carousel-item {
+            width: 33.333% !important;
+            height: 100% !important;
+            position: relative !important; /* 强制覆盖 style.css 中的 absolute 绝对定位 */
+            opacity: 1 !important;         /* 强制覆盖 style.css 中的 opacity: 0 隐身属性 */
+            z-index: auto !important;
+        }
+
+        .carousel-item img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            display: block !important;
+        }
+
+        /* ==========================================
+           戏曲名家专属微调样式组（完全对齐样例左对齐精致版）
+           ========================================== */
+        .artist-grid {
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 0 10px;
+        }
+
+        .artist-card {
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #e2e2e2;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 380px; /* 统一高度，完美齐平 */
+            transition: all 0.4s ease;
+        }
+
+        .artist-card-img {
+            width: 100%;
+            height: 200px; /* 戏曲大师剧照固定宽比例高度 */
+            overflow: hidden;
+        }
+
+        .artist-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 核心：文字内容左对齐排版 */
+        .artist-info-box {
+            padding: 15px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            text-align: left; /* 左对齐 */
+        }
+
+        .artist-info-box h3 {
+            font-size: 18px;
+            color: #222222;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .artist-info-box p {
+            font-size: 13px;
+            color: #111111 !important; /* 字体颜色加深 */
+            font-weight: bold !important; /* 字体加粗 */
+            line-height: 1.6;
+            text-align: justify; /* 两端对齐，呈现出版面齐整感 */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 统一半透明导航栏 -->
+    <header>
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="genres.html">剧种介绍</a></li>
+                <li><a href="artists.html" class="active">戏曲名家</a></li>
+                <li class="nav-logo">
+                    <img src="images/pic14.png" alt="中国戏曲Logo">
+                    <span>中国戏曲</span>
+                </li>
+                <li><a href="masks.html">戏曲脸谱</a></li>
+                <li><a href="roles.html">戏曲行当</a></li>
+                <li><a href="message.html">留言</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- 顶部大轮播图 (对应 pic110.jpg、pic111.jpg、pic112.jpg) -->
+    <div class="carousel-container">
+        <!-- 核心物理滑轨 -->
+        <div class="carousel-track" id="carouselTrack">
+            <!-- 图片110 -->
+            <div class="carousel-item"><img src="images/pic110.jpg" alt="名家轮播1"></div>
+            <!-- 图片111 -->
+            <div class="carousel-item"><img src="images/pic111.jpg" alt="名家轮播2"></div>
+            <!-- 图片112 -->
+            <div class="carousel-item"><img src="images/pic112.jpg" alt="名家轮播3"></div>
+        </div>
+        <button class="carousel-btn prev" onclick="moveSlide(-1)">&#10094;</button>
+        <button class="carousel-btn next" onclick="moveSlide(1)">&#10095;</button>
+    </div>
+
+    <div class="section-title">
+        <h2>艺术传承：戏曲名家</h2>
+        <p>Famous Opera Artist</p>
+    </div>
+
+    <!-- 12名家卡片网格布局（已应用全新高级左对齐样式，对应图片113至124） -->
+    <div class="artist-grid">
+        
+        <!-- 名家 1 (图片113) -->
+        <div class="artist-card hover-effect">
+            <div class="artist-card-img">
+                <img src="images/pic113.png" alt="常香玉">
+            </div>
+            <div class="artist-info-box">
+                <h3>常香玉</h3>
+                <p>豫剧表演艺术家，代表剧目有《花木兰》《拷红》等，以其独特的唱腔和表演风格深受观众喜爱。</p>
+            </div>
+        </div>
+
+        <!-- 名家 2 (图片114) -->
+        <div class="artist-card hover-effect">
+            <div class="artist-card-img">
+                <img src="images/pic114.jpg" alt="梅兰芳">
+            </div>
+            <div class="artist-info-box">
+                <h3>梅兰芳</h3>
+                <p>京剧表演艺术家，工旦行，对京剧旦角的唱腔、表演、化妆等方面都有革新创造，形成了自己的艺术风格。</p>
+            </div>
+        </div>
+
+        <!-- 名家 3 (图片115) -->
+        <div class="artist-card hover-effect">
+            <div class="artist-card-img">
+                <img src="images/pic115.jpg" alt="陈素真">
+            </div>
+            <div class="artist-info-box">
+                <h3>陈素真</h3>
+                <p>豫剧表演艺术家，豫剧六大名旦之一。唱腔优美，表演细腻，代表剧目有《宇宙锋》《梵王宫》等。</p>
+            </div>
+        </div>
+
+        <!-- 名家 4 (图片116) -->
+        <div class="artist-card hover-effect">
+            <div class="artist-card-img">
+                <img src="images/pic116.png" alt="马金凤">
+            </div>
+            <div class="artist-info-box">
+                <h3>马金凤</h3>
+                <p>豫剧表演艺术家，被誉为“洛阳牡丹”，代表剧目有《穆桂英挂帅》《花打朝》等。</p>
+            </div>
+        </div>
+
+        <!-- 名家 5 (图片117) -->
+        <div class="artist-card hover-effect">
+            <div class="artist-card-img">
+                <img src="images/pic117.jpg" alt="丁凡">
+            </div>
+            <div class="artist-info-box">
+                <h3>丁凡</h3>
+                <p>粤剧表演艺术家，代表剧目有《搜书院》《山乡风云》等，以其独特的唱腔和表演风格在粤剧界享有极高声誉。</p>
+            </div>
+        </div>
+
+        <!-- 名家 6 (图片118) -->
+        <div class="artist-card hover-effect">
+            <div class="artist-card-img">
+                <img src="images/pic118.png" alt="沈昳丽">
+            </div>
+            <div class="artist-info-box">
+                <h3>沈昳丽</h3>
+                <p>昆曲表演艺术家，工旦行，代表剧目有《牡丹亭》《西厢记》等，以其精湛的演技赢得了观众的喜爱。</p>
+            </div>
+        </div>
+
+        <!-- 名家 7 (图片119) -->
+        <div class="artist-card hover-effect">
+            <div class="artist-card-img">
+                <img src="images/pic119.jpg" alt="裴艳玲">
+            </div>
+            <div class="artist-info-box">
+                <h3>裴艳玲</h3>
+                <p>河北梆子、京剧表演大家，代表剧目有《钟馗嫁妹》《宝莲灯》等，以其高超的武打技巧著称。</p>
+            </div>
+        </div>
+
+        <!-- 名家 8 (图片120) -->
+        <div class="artist-card hover-effect">
+            <div class="artist-card-img">
+                <img src="images/pic120.jpg" alt="袁雪芬">
+            </div>
+            <div class="artist-info-box">
+                <h3>袁雪芬</h3>
+                <p>越剧表演艺术家，越剧袁派创始人，代表剧目有《祥林嫂》《梁祝》等。</p>
+            </div>
+        </div>
+
+        <!-- 名家 9 (图片121) -->
+        <div class="artist-card hover-effect">
+            <div class="artist-card-img">
+                <img src="images/pic121.png" alt="严凤英">
+            </div>
+            <div class="artist-info-box">
+                <h3>严凤英</h3>
+                <p>黄梅戏表演艺术家，代表剧目有《天仙配》《牛郎织女》等，其表演风格自然铺实，深受观众喜爱。</p>
+            </div>
+        </div>
+
+        <!-- 名家 10 (图片122) -->
+        <div class="artist-card hover-effect">
+            <div class="artist-card-img">
+                <img src="images/pic122.png" alt="唐喜成">
+            </div>
+            <div class="artist-info-box">
+                <h3>唐喜成</h3>
+                <p>豫剧表演艺术家，以唱功见长，代表剧目有《三哭殿》《南阳关》等。</p>
+            </div>
+        </div>
+
+        <!-- 名家 11 (图片123) -->
+        <div class="artist-card hover-effect">
+            <div class="artist-card-img">
+                <img src="images/pic123.png" alt="李斯忠">
+            </div>
+            <div class="artist-info-box">
+                <h3>李斯忠</h3>
+                <p>豫剧净角表演艺术家，专攻花脸，代表剧目有《包公案》《司马茅告状》等。</p>
+            </div>
+        </div>
+
+        <!-- 名家 12 (图片124) -->
+        <div class="artist-card hover-effect">
+            <div class="artist-card-img">
+                <img src="images/pic124.png" alt="徐玉兰">
+            </div>
+            <div class="artist-info-box">
+                <h3>徐玉兰</h3>
+                <p>越剧表演艺术家，越剧徐派创始人，代表剧目有《红楼梦》《西厢记》等。</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 统一底栏 (100%全跳页脚，素材来源绑定您提供的4个最新域名，底署名为“珍珍仙女出品”) -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>经典剧目</h4>
+                <ul>
+                    <li><a href="peking.html">京剧</a></li>
+                    <li><a href="yue.html">越剧</a></li>
+                    <li><a href="huangmei.html">黄梅戏</a></li>
+                    <li><a href="ping.html">评剧</a></li>
+                    <li><a href="yu.html">豫剧</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>素材来源</h4>
+                <ul>
+                    <li><a href="http://xi-qu.com/" target="_blank">中国戏曲网</a></li>
+                    <li><a href="https://www.china1901.com/#/" target="_blank">中国音网</a></li>
+                    <li><a href="https://www.xikao.com/" target="_blank">中国京剧戏考</a></li>
+                    <li><a href="https://www.bjo.com.cn/" target="_blank">北京京剧院</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>联系我们</h4>
+                <ul>
+                    <li><a href="message.html">点击进入留言板块</a></li>
+                    <li>手机：17864386130</li>
+                    <li>邮箱：3590619453@qq.com</li>
+                </ul>
+            </div>
+            <div class="footer-column footer-mascot">
+                <img src="images/pic14.png" alt="可爱戏剧人物">
+            </div>
+        </div>
+        <div class="footer-bottom-line" style="color: #888; font-size: 13px; font-weight: bold !important; letter-spacing: 1px;">
+            珍珍仙女出品
+        </div>
+    </footer>
+
+    <!-- 原生部滑行动效JS逻辑 (已升级为 3 张图高精度水平位移逻辑) -->
+    <script>
+        let slideIndex = 0;
+        const track = document.getElementById("carouselTrack");
+        const totalSlides = document.getElementsByClassName("carousel-item").length; // 会自动计算出3张
+        
+        // 核心：页面加载时即刻触发初始化，防止大屏封面初次加载显示为黑色大块
+        showSlides(slideIndex);
+
+        function showSlides(n) {
+            if (n >= totalSlides) { slideIndex = 0; }
+            if (n < 0) { slideIndex = totalSlides - 1; }
+            
+            // 核心计算公式：3张大图，每张占轨道总宽度的 33.333%
+            const offset = -slideIndex * 33.333; 
+            track.style.transform = `translateX(${offset}%)`;
+        }
+        function moveSlide(n) {
+            slideIndex += n;
+            showSlides(slideIndex);
+        }
+        setInterval(() => { moveSlide(1); }, 5000); // 5秒自动滑动一轮
+    </script>
+</body>
+</html>

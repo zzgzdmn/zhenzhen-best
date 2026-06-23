@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>越剧详情 - 中国戏曲文化网</title>
+    <!-- 引入核心全局样式表 -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* ==========================================
+           首屏大图轮播：全新升级的 3 张图水平滑行动效（带强制覆盖，100%显现跑动）
+           ========================================== */
+        .carousel-container {
+            width: 100%;
+            height: 600px;
+            position: relative;
+            overflow: hidden;
+            background-color: #f7f5f0; /* 消除页面首屏载入时的黑屏闪烁 */
+        }
+
+        /* 核心滑轨：3张图，轨道总宽度设为 300%（强制覆盖style.css） */
+        .carousel-track {
+            display: flex !important; /* 强制启用flex横排 */
+            width: 300% !important; 
+            height: 100% !important;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1) !important; /* 平滑滑行曲线 */
+        }
+
+        /* 3张图，每一个轮播项占比 1/3（即 33.333%），并强制重置不透明度与定位 */
+        .carousel-item {
+            width: 33.333% !important;
+            height: 100% !important;
+            position: relative !important; /* 强制覆盖 style.css 中的 absolute 绝对定位 */
+            opacity: 1 !important;         /* 强制覆盖 style.css 中的 opacity: 0 隐身属性 */
+            z-index: auto !important;
+        }
+
+        .carousel-item img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            display: block !important;
+        }
+           
+        /* 越剧舞台艺术专用网格 */
+        .yue-stage-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            padding: 0 20px;
+        }
+        
+        .yue-stage-item {
+            height: 220px;
+            overflow: hidden;
+            border-radius: 6px;
+        }
+        
+        .yue-stage-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 经典越剧专属 3:4 竖版海报卡片排版 (完全对齐经典京剧、经典豫剧) */
+        .yue-poster-grid {
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 0 10px;
+        }
+
+        .yue-poster-card {
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #e2e2e2;
+            padding: 10px; /* 精简内边距 */
+            height: 330px; /* 强制高度为 330px，与其他详情页高度绝对一致 */
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .yue-poster-card img {
+            width: 100%;
+            height: 100%; /* 图片平铺占满整个卡片 */
+            object-fit: cover; /* 居中裁剪不拉伸 */
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 统一半透明导航栏 -->
+    <header>
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="genres.html">剧种介绍</a></li>
+                <li><a href="artists.html">戏曲名家</a></li>
+                <li class="nav-logo">
+                    <img src="images/pic14.png" alt="中国戏曲Logo">
+                    <span>中国戏曲</span>
+                </li>
+                <li><a href="masks.html">戏曲脸谱</a></li>
+                <li><a href="roles.html">戏曲行当</a></li>
+                <li><a href="message.html">留言</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- 顶部大轮播图 (3张通用水平轨道图：pic54.jpg、pic55.jpg、pic56.jpg) -->
+    <div class="carousel-container">
+        <!-- 核心物理滑轨 -->
+        <div class="carousel-track" id="carouselTrack">
+            <!-- 图片54 -->
+            <div class="carousel-item"><img src="images/pic54.jpg" alt="越剧封面1"></div>
+            <!-- 图片55 -->
+            <div class="carousel-item"><img src="images/pic55.jpg" alt="越剧封面2"></div>
+            <!-- 图片56 -->
+            <div class="carousel-item"><img src="images/pic56.jpg" alt="越剧封面3"></div>
+        </div>
+        <button class="carousel-btn prev" onclick="moveSlide(-1)">&#10094;</button>
+        <button class="carousel-btn next" onclick="moveSlide(1)">&#10095;</button>
+    </div>
+
+    <!-- 越剧舞台艺术 -->
+    <div class="section-title">
+        <h2>越剧舞台艺术</h2>
+        <p>Yue Opera Stage Art</p>
+    </div>
+
+    <div class="yue-stage-grid">
+        <!-- 图片57 至 图片62 -->
+        <div class="yue-stage-item hover-effect"><img src="images/pic57.jpg" alt="舞台剧照1"></div>
+        <div class="yue-stage-item hover-effect"><img src="images/pic58.jpg" alt="舞台剧照2"></div>
+        <div class="yue-stage-item hover-effect"><img src="images/pic59.jpg" alt="舞台剧照3"></div>
+        <div class="yue-stage-item hover-effect"><img src="images/pic60.jpg" alt="舞台剧照4"></div>
+        <div class="yue-stage-item hover-effect"><img src="images/pic61.jpg" alt="舞台剧照5"></div>
+        <div class="yue-stage-item hover-effect"><img src="images/pic62.jpg" alt="舞台剧照6"></div>
+    </div>
+
+    <!-- 越剧简介 -->
+    <div class="section-title">
+        <h2>越剧简介</h2>
+        <p>About Yue Opera</p>
+    </div>
+
+    <!-- 发展演变 (已替换 English and 单词) -->
+    <div class="info-row">
+        <div class="info-img hover-effect">
+            <!-- 图片63 -->
+            <img src="images/pic63.jpg" alt="发展演变">
+        </div>
+        <div class="info-text">
+            <h3>发展演变</h3>
+            <p>越剧经历了由男子越剧到女子越剧为主的历史性演变。1925年9月17日，在上海小世界游乐场演出的“的笃班”，首次在《申报》广告上称为“越剧”。1938年起，多数戏班和剧团称“越剧”。女子越剧在上海立足后，以姚水娟为代表的一批越剧从业者进行了改革，称为“改良戏”。</p>
+        </div>
+    </div>
+
+    <!-- 历史背景与艺术特点（并排/反转排版） -->
+    <div class="info-row">
+        <div class="info-text">
+            <h3>历史背景</h3>
+            <p>越剧，汉语拼音为yuèjù，英语为Yue Opera，是中国第二大剧种，有“第二国剧”之称，也被称为绍兴戏，是流传最广的地方剧种之一。它起源于清末的浙江嵊州（即春秋越国所在地），最初是由曲艺“落地唱书”发展而成。</p>
+        </div>
+        <div class="info-img hover-effect">
+            <!-- 图片64 -->
+            <img src="images/pic64.jpg" alt="历史背景">
+        </div>
+    </div>
+
+    <div class="info-row">
+        <div class="info-img hover-effect">
+            <!-- 图片65 -->
+            <img src="images/pic65.jpg" alt="艺术特点">
+        </div>
+        <div class="info-text">
+            <h3>艺术特点</h3>
+            <p>越剧长于抒情，以唱为主，声音优美动听，表演真切动人，唯美典雅，极具江南灵秀之气。它多以“才子佳人”题材为主，艺术流派纷呈。公认的有十三大流派之多。</p>
+        </div>
+    </div>
+
+    <!-- 经典越剧（全新竖幅长方形卡片，已彻底与经典京剧、豫剧海报比例对齐） -->
+    <div class="section-title">
+        <h2>经典越剧</h2>
+        <p>Classic Yue Opera</p>
+    </div>
+
+    <div class="yue-poster-grid">
+        <!-- 卡片 1 (图片66: 无字纯图) -->
+        <div class="yue-poster-card hover-effect">
+            <img src="images/pic66.jpg" alt="经典海报1">
+        </div>
+        <!-- 卡片 2 (图片67: 无字纯图) -->
+        <div class="yue-poster-card hover-effect">
+            <img src="images/pic67.jpg" alt="经典海报2">
+        </div>
+        <!-- 卡片 3 (图片68: 无字纯图) -->
+        <div class="yue-poster-card hover-effect">
+            <img src="images/pic68.jpg" alt="经典海报3">
+        </div>
+        <!-- 卡片 4 (图片69: 无字纯图) -->
+        <div class="yue-poster-card hover-effect">
+            <img src="images/pic69.jpg" alt="经典海报4">
+        </div>
+    </div>
+
+    <!-- 统一页脚 -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>经典剧目</h4>
+                <ul>
+                    <li><a href="peking.html">京剧</a></li>
+                    <li><a href="yue.html">越剧</a></li>
+                    <li><a href="huangmei.html">黄梅戏</a></li>
+                    <li><a href="ping.html">评剧</a></li>
+                    <li><a href="yu.html">豫剧</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>素材来源</h4>
+                <ul>
+                    <li><a href="http://xi-qu.com/" target="_blank">中国戏曲网</a></li>
+                    <li><a href="https://www.china1901.com/#/" target="_blank">中国音网</a></li>
+                    <li><a href="https://www.xikao.com/" target="_blank">中国京剧戏考</a></li>
+                    <li><a href="https://www.bjo.com.cn/" target="_blank">北京京剧院</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>联系我们</h4>
+                <ul>
+                    <li><a href="message.html">点击进入留言板块</a></li>
+                    <li>手机：17864386130</li>
+                    <li>邮箱：3590619453@qq.com</li>
+                </ul>
+            </div>
+            <div class="footer-column footer-mascot">
+                <img src="images/pic14.png" alt="可爱戏剧人物">
+            </div>
+        </div>
+        <div class="footer-bottom-line" style="color: #888; font-size: 13px; font-weight: bold !important; letter-spacing: 1px;">
+            珍珍仙女出品
+        </div>
+    </footer>
+
+    <!-- 原生部滑行动效JS逻辑 -->
+    <script>
+        let slideIndex = 0;
+        const track = document.getElementById("carouselTrack");
+        const totalSlides = document.getElementsByClassName("carousel-item").length; // 会自动计算出3张
+        
+        // 初始化加载
+        showSlides(slideIndex);
+
+        function showSlides(n) {
+            if (n >= totalSlides) { slideIndex = 0; }
+            if (n < 0) { slideIndex = totalSlides - 1; }
+            
+            // 核心计算公式：3张大图，每张占轨道总宽度的 33.333%
+            const offset = -slideIndex * 33.333; 
+            track.style.transform = `translateX(${offset}%)`;
+        }
+        function moveSlide(n) {
+            slideIndex += n;
+            showSlides(slideIndex);
+        }
+        setInterval(() => { moveSlide(1); }, 5000); // 5秒换一张
+    </script>
+</body>
+</html>

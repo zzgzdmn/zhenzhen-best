@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>在线留言 - 中国戏曲文化网</title>
+    <!-- 引入核心全局样式表 -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* ==========================================
+           在线留言：专属中式国潮“信笺纸卷”创意大修样式
+           ========================================== */
+
+        /* 核心修改：在导航栏与下方正文之间，绘制一条精致且粗细适中的戏曲红线分割 */
+        header {
+            border-bottom: 2px solid #8c1c1c !important; 
+        }
+
+        /* 页面标题：下移145px，完美避开悬浮导航红线，预留极佳呼吸高度 */
+        .message-page-title {
+            text-align: center;
+            margin: 145px auto 30px !important; /* 从 110px 调大至 145px，拉开完美距离 */
+            position: relative;
+        }
+
+        /* 核心修复：还原页面大标题下方的英文副标题，彻底解决因全局样式覆盖导致英文漂移到最左侧的Bug */
+        .message-page-title p {
+            color: #777777 !important; /* 恢复雅致浅灰色 */
+            font-size: 14px !important;
+            font-weight: normal !important; /* 恢复普通字重，不加粗 */
+            text-transform: uppercase;
+            margin-top: 8px !important;
+            letter-spacing: 1px !important;
+            text-align: center !important; /* 强制物理绝对居中对齐 */
+            display: block !important;
+        }
+
+        /* 传统信笺式留言盒子 */
+        .scroll-message-box {
+            position: relative;
+            max-width: 900px;
+            margin: 30px auto 60px;
+            background-color: #faf7f2; /* 宣纸微黄底色 */
+            border: 2px solid #8c1c1c; /* 戏曲红实线外框 */
+            border-radius: 4px;
+            padding: 50px 60px;
+            box-shadow: 0 12px 40px rgba(140, 28, 28, 0.08); /* 柔和红影 */
+        }
+
+        /* 核心创意：卡片右上方手盖“珍珍仙女”朱砂印章 */
+        .traditional-seal {
+            position: absolute;
+            top: 25px;
+            right: 45px;
+            width: 55px;
+            height: 55px;
+            border: 2.5px solid #8c1c1c; /* 朱砂红印框 */
+            color: #8c1c1c;
+            font-size: 13px;
+            font-weight: 900 !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            line-height: 1.2;
+            font-family: "STKaiti", "Kaiti", serif;
+            transform: rotate(-12deg); /* 模拟真实手盖印章的倾斜感 */
+            opacity: 0.85;
+            border-radius: 3px;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        /* 姓名、电话等标签字体：加重加深加大，提升古风信纸对比度 */
+        .scroll-field-label {
+            font-size: 17px !important; /* 字号加大到17px */
+            font-weight: bold !important;
+            color: #111111 !important; /* 纯黑 */
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        /* 乌丝栏金色横线书写框 */
+        .scroll-input {
+            width: 100%;
+            background: transparent !important; /* 彻底去除输入框白色底色 */
+            border: none !important;
+            border-bottom: 1.5px dashed #d4af37 !important; /* 金黄色乌丝栏虚线 */
+            padding: 10px 5px !important;
+            font-size: 16px !important;
+            font-weight: bold !important;
+            color: #111111 !important;
+            font-family: inherit;
+            border-radius: 0 !important;
+            transition: all 0.3s;
+        }
+
+        /* 核心修改：留言内容专属书写框设为 100% 满宽以实现虚写线完美拉长、横跨整个信纸！并设150px右保护间距防止字碰到小人 */
+        .scroll-textarea {
+            width: 100% !important; /* 强制满宽，使下方的黄金虚线铺满整个卡片 */
+            padding-right: 150px !important; /* 核心：右侧留出 150px 空气保护内边距，使文字能自动避开小人安全折行 */
+            display: inline-block !important;
+            background: transparent !important;
+            border: none !important;
+            border-bottom: 1.5px dashed #d4af37 !important;
+            padding: 10px 5px !important;
+            font-size: 16px !important;
+            font-weight: bold !important;
+            color: #111111 !important;
+            font-family: inherit;
+            border-radius: 0 !important;
+            resize: none;
+            transition: all 0.3s;
+        }
+
+        /* 聚焦动效：底线变为戏曲红实线 */
+        .scroll-input:focus, .scroll-textarea:focus {
+            outline: none !important;
+            border-bottom: 2px solid #8c1c1c !important;
+        }
+
+        /* ==========================================
+           【核心重构】：大号戏曲自转小人专用定位容器（图片666）
+           ========================================== */
+        .scroll-mascot-wrapper {
+            position: absolute;
+            right: 35px; /* 精准定位在纸张最右侧边缘，靠右对齐 */
+            bottom: 85px; /* 精准定位在主题黄色虚线的正下方、留言内容框右侧 */
+            width: 130px;
+            height: 130px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 15;
+            pointer-events: auto; /* 允许鼠标划过事件 */
+        }
+
+        /* 戏剧Q版小人：高度放大到125px，命名为 pic666.png 放入 images/ 文件夹 */
+        .scroll-mascot-img {
+            width: auto;
+            height: 125px; /* 核心修改：整体尺寸放大到 125px */
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); /* 平滑自转曲线 */
+            cursor: pointer;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.12));
+        }
+
+        /* 核心效果：当鼠标指针划过（碰她）小人时，瞬间飞速顺时针自转 360 度并轻微变大 */
+        .scroll-mascot-wrapper:hover .scroll-mascot-img {
+            transform: rotate(360deg) scale(1.08);
+        }
+
+        /* 递交锦书：金光祥云国潮按钮 */
+        .scroll-submit-btn {
+            width: 100%;
+            background-color: #8c1c1c; /* 经典红 */
+            color: #ffffff !important;
+            border: 1px solid #8c1c1c;
+            padding: 13px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            letter-spacing: 6px; /* 扩宽字间距 */
+            margin-top: 25px;
+            box-shadow: 0 4px 15px rgba(140, 28, 28, 0.4);
+        }
+
+        .scroll-submit-btn:hover {
+            background-color: #b52424;
+            transform: translateY(-2px);
+            border-color: #ffdf7a; /* 金边 */
+            box-shadow: 0 0 20px #ffdf7a, 0 4px 15px rgba(140, 28, 28, 0.5); /* 金光祥云光晕 */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 全局统一半透明悬浮导航栏 -->
+    <header>
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="genres.html">剧种介绍</a></li>
+                <li><a href="artists.html">戏曲名家</a></li>
+                <li class="nav-logo">
+                    <img src="images/pic14.png" alt="中国戏曲Logo">
+                    <span>中国戏曲</span>
+                </li>
+                <li><a href="masks.html">戏曲脸谱</a></li>
+                <li><a href="roles.html">戏曲行当</a></li>
+                <li><a href="message.html" class="active">留言</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- 标题（已微调下移145px，消灭留白，并绑定了高反差强制居中英文） -->
+    <div class="message-page-title">
+        <h2>在线留言</h2>
+        <p>Guestbook</p>
+    </div>
+
+    <!-- 传统中式“信笺纸卷”创意留言板 -->
+    <div class="scroll-message-box">
+        
+        <!-- 右上方手盖“珍珍仙女”朱砂印章 -->
+        <div class="traditional-seal">
+            珍珍<br>仙女
+        </div>
+
+        <form id="msgForm" onsubmit="submitForm(event)">
+            <div class="form-group-row">
+                <div class="form-field">
+                    <label class="scroll-field-label">姓名：</label>
+                    <input type="text" id="username" class="scroll-input" placeholder="请书写您的姓名" required>
+                </div>
+                <div class="form-field">
+                    <label class="scroll-field-label">电话：</label>
+                    <input type="tel" id="usertel" class="scroll-input" placeholder="请书写您的联系电话" required>
+                </div>
+            </div>
+            <div class="form-group-row">
+                <div class="form-field">
+                    <label class="scroll-field-label">邮箱：</label>
+                    <input type="email" id="useremail" class="scroll-input" placeholder="请书写您的电子邮箱" required>
+                </div>
+                <div class="form-field">
+                    <label class="scroll-field-label">主题：</label>
+                    <input type="text" id="subject" class="scroll-input" placeholder="请书写留言主题" required>
+                </div>
+            </div>
+            <div class="form-group-row" style="margin-bottom: 25px;">
+                <div class="form-field" style="width: 100%;">
+                    <label class="scroll-field-label">留言内容：</label>
+                    <!-- 书写框设为100%满宽，并设置150px右侧内边距防小人重叠 -->
+                    <textarea id="msgcontent" class="scroll-textarea" rows="6" placeholder="请铺展书写您的留言内容..." required></textarea>
+                </div>
+            </div>
+            
+            <!-- 升级为“递交锦书”国潮按钮 -->
+            <button type="submit" class="scroll-submit-btn">递交锦书</button>
+        </form>
+
+        <!-- 新增并定位在最右侧的【图片666】（pic666.png，大尺寸、自转动效小人） -->
+        <div class="scroll-mascot-wrapper">
+            <img src="images/pic666.png" alt="自转戏剧人物" class="scroll-mascot-img">
+        </div>
+    </div>
+
+    <!-- 统一高级黑色底栏 (100%全跳页脚，素材来源绑定您提供的4个最新域名，底署名为“珍珍仙女出品”) -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>经典剧目</h4>
+                <ul>
+                    <li><a href="peking.html">京剧</a></li>
+                    <li><a href="yue.html">越剧</a></li>
+                    <li><a href="huangmei.html">黄梅戏</a></li>
+                    <li><a href="ping.html">评剧</a></li>
+                    <li><a href="yu.html">豫剧</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>素材来源</h4>
+                <ul>
+                    <li><a href="http://xi-qu.com/" target="_blank">中国戏曲网</a></li>
+                    <li><a href="https://www.china1901.com/#/" target="_blank">中国音网</a></li>
+                    <li><a href="https://www.xikao.com/" target="_blank">中国京剧戏考</a></li>
+                    <li><a href="https://www.bjo.com.cn/" target="_blank">北京京剧院</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>联系我们</h4>
+                <ul>
+                    <li><a href="message.html">点击进入留言板块</a></li>
+                    <li>手机：17864386130</li>
+                    <li>邮箱：3590619453@qq.com</li>
+                </ul>
+            </div>
+            <div class="footer-column footer-mascot">
+                <img src="images/pic14.png" alt="可爱戏剧人物">
+            </div>
+        </div>
+        <div class="footer-bottom-line" style="color: #888; font-size: 13px; font-weight: bold !important; letter-spacing: 1px;">
+            珍珍仙女出品
+        </div>
+    </footer>
+
+    <!-- 表单提交控制 -->
+    <script>
+        function submitForm(event) {
+            event.preventDefault(); // 阻止默认的表单提交刷新页面
+            const name = document.getElementById("username").value;
+            alert("锦书已成功递交！仙女珍珍感谢您的宝贵意见，" + name + "！");
+            document.getElementById("msgForm").reset(); // 重置表单
+        }
+    </script>
+</body>
+</html>
